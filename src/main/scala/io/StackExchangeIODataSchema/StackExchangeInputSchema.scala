@@ -27,4 +27,13 @@ object StackExchangeInputSchema {
                           CloseReasonId: Option[String]
                         )
 
+  case class PostLinksData(
+                            CreationDate: String,
+                            Id: Long,
+                            LinkTypeId: Long,
+                            PostId: Long,
+                            RelatedPostId: Long,
+                            VALUE: String
+                            )
+
 }

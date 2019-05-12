@@ -13,10 +13,10 @@ class PostLinksXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       PostLinksXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/PostLinks.xml")
+        .loadPostLinksDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/PostLinks.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 6
     }
   }
 }

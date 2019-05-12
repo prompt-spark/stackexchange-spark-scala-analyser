@@ -20,30 +20,30 @@ object PostHistoryXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val commentRawDF = spark.read.option("rowTag", "posthistory").format("xml")
+    val postHistoryRawDF = spark.read.option("rowTag", "posthistory").format("xml")
       .load(postXmlPath).select(explode(col("row")))
 
     import spark.implicits._
-    val structCommentRawDF = commentRawDF.select("col.*")
+    val structPostHistoryRawDF = postHistoryRawDF.select("col.*")
 
-    val renamedCommentDF = structCommentRawDF.toDF(
-      structCommentRawDF
+    val renamedCommentDF = structPostHistoryRawDF.toDF(
+      structPostHistoryRawDF
         .columns
         .map(x => x.replaceAll("_", "")): _*)
 
-    val optionalColumnDF = spark.sparkContext.parallelize(List("option-default-value"
+    val optionalPostHistoryColumnDF = spark.sparkContext.parallelize(List("option-default-value"
     )).toDF("CloseReasonId")
     //CloseReasonId="test-field"
 
     val renamedCommentDFCols = renamedCommentDF.columns.toSet
-    val optionalColumnCols = optionalColumnDF.columns.toSet
+    val optionalColumnCols = optionalPostHistoryColumnDF.columns.toSet
 
     val unionCols = renamedCommentDFCols ++ optionalColumnCols
 
     val postHistoryDataset: Dataset[PostHistoryData] =
       renamedCommentDF
         .select(LoaderHandler.colMatcher(renamedCommentDFCols, unionCols): _*)
-        .union(optionalColumnDF.select(LoaderHandler.colMatcher(optionalColumnCols, unionCols): _*))
+        .union(optionalPostHistoryColumnDF.select(LoaderHandler.colMatcher(optionalColumnCols, unionCols): _*))
         .as[PostHistoryData]
 
     //postHistoryDataset.select(countDistinct("CloseReasonId")).show()
