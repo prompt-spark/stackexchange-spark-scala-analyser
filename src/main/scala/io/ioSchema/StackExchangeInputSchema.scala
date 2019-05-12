@@ -1,4 +1,4 @@
-package io.StackExchangeIODataSchema
+package io.ioSchema
 
 object StackExchangeInputSchema {
 

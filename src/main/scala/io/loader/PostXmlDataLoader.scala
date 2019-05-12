@@ -1,6 +1,6 @@
 package io.loader
 
-import io.StackExchangeIODataSchema.StackExchangeInputSchema.PostData
+import io.ioSchema.StackExchangeInputSchema.PostData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}

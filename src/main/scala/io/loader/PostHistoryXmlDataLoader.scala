@@ -1,6 +1,6 @@
 package io.loader
 
-import io.StackExchangeIODataSchema.StackExchangeInputSchema.PostHistoryData
+import io.ioSchema.StackExchangeInputSchema.PostHistoryData
 import io.api.LoaderHandler
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
