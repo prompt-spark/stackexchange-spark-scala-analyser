@@ -46,4 +46,21 @@ object StackExchangeInputSchema {
                         VoteTypeId: Long
                       )
 
+  case class UsersData(
+                        AboutMe:String,
+                        AccountId:Long,
+                        CreationDate:String,
+                        DisplayName:String,
+                        DownVotes:Long,
+                        Id:Long,
+                        LastAccessDate:String,
+                        Location:String,
+                        ProfileImageUrl:String,
+                        Reputation:Long,
+                        UpVotes:Long,
+                        VALUE:String,
+                        Views:Long,
+                        WebsiteUrl:String
+                      )
+
 }

@@ -6,6 +6,6 @@ import org.apache.hadoop.fs.Path
 object userPostsHistoryModeller {
 
   def userPostHistory(path: Path) = {
-    UsersXmlDataLoader.main(path.toString)
+    UsersXmlDataLoader.loadUsersDS(path.toString)
   }
 }

@@ -13,10 +13,10 @@ class UsersXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       UsersXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Users.xml")
+        .loadUsersDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Users.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 14
     }
   }
 }
