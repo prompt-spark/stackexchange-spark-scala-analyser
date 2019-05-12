@@ -7,7 +7,7 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object PostLinksXmlDataLoader {
-  def loadPostLinksDS(postXmlPath: String): Dataset[PostLinksData] = {
+  def loadPostLinksDS(postLinksXmlPath: String): Dataset[PostLinksData] = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -21,7 +21,7 @@ object PostLinksXmlDataLoader {
         .getOrCreate()
 
     val postLinksRawDF = spark.read.option("rowTag", "postlinks").format("xml")
-      .load(postXmlPath).select(explode(col("row")))
+      .load(postLinksXmlPath).select(explode(col("row")))
 
     import spark.implicits._
     val structPostLinksDF = postLinksRawDF.select("col.*")

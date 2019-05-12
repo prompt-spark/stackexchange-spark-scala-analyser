@@ -36,4 +36,14 @@ object StackExchangeInputSchema {
                             VALUE: String
                             )
 
+  case class VotesData(
+                        BountyAmount: Option[Long],
+                        CreationDate: String,
+                        Id: Long,
+                        PostId: Long,
+                        UserId: Option[Long],
+                        VALUE: String,
+                        VoteTypeId: Long
+                      )
+
 }

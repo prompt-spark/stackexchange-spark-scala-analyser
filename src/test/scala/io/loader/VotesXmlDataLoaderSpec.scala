@@ -13,10 +13,10 @@ class VotesXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       VotesXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Votes.xml")
+        .loadVotesDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Votes.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 7
     }
   }
 }
