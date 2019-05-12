@@ -13,8 +13,8 @@ class PostHistoryXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       PostHistoryXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/PostHistory.xml")
+        .loadPostHistoryDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/PostHistory.xml")
         .columns
         .length shouldBe 1
     }

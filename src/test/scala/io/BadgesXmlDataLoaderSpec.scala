@@ -14,10 +14,10 @@ class BadgesXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       BadgesXmlDataLoader
-        .providerDS(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/*/Badges.xml")
+        .loadBadgeDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Badges.xml")
         .columns
-        .length shouldBe 5
+        .length shouldBe 3
     }
   }
 }

@@ -7,7 +7,7 @@ import org.apache.spark.SparkConf
 
 object BadgesXmlDataLoader {
 
-  def providerDS(badgeXmlPath: String): Dataset[BadgeData] = {
+  def loadBadgeDS(badgeXmlPath: String): Dataset[BadgeData] = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -23,7 +23,7 @@ object BadgesXmlDataLoader {
     val badgesRawDF =
       spark.read.option("rowTag", "badges").format("xml").load(badgeXmlPath)
 
-    val badgeMappedColnames = Seq("UserId", "Name", "Class", "Date", "TagBased")
+    val badgeMappedColnames = Seq("UserId", "Name", "Date")
 
     import spark.implicits._
 
@@ -31,9 +31,7 @@ object BadgesXmlDataLoader {
       .select(explode(col("row")))
       .select("col._UserId",
               "col._Name",
-              "col._Class",
-              "col._Date",
-              "col._TagBased")
+              "col._Date")
       .toDF(badgeMappedColnames: _*)
       .as[BadgeData]
 

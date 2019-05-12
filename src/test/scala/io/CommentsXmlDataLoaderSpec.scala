@@ -13,8 +13,8 @@ class CommentsXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       CommentsXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Comments.xml")
+        .loadCommentsDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Comments.xml")
         .columns
         .length shouldBe 6
     }
