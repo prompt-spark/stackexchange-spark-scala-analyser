@@ -12,11 +12,11 @@ class PostsXmlDataLoaderSpec
   describe("Column Numbers") {
 
     it("should check all the column numbers") {
-      PostsXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Posts.xml")
+      PostXmlDataLoader
+        .loadPostDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Posts.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 22
     }
   }
 }

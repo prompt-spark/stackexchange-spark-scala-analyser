@@ -13,10 +13,10 @@ class TagsXmlDataLoaderSpec
 
     it("should check all the column numbers") {
       TagsXmlDataLoader
-        .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Tags.xml")
+        .loadTagsDS(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Tags.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 6
     }
   }
 }

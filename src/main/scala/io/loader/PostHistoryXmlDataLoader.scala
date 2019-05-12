@@ -7,7 +7,7 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object PostHistoryXmlDataLoader {
-  def loadPostHistoryDS(postXmlPath: String): Dataset[PostHistoryData] = {
+  def loadPostHistoryDS(postHistoryXmlPath: String): Dataset[PostHistoryData] = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -21,12 +21,12 @@ object PostHistoryXmlDataLoader {
         .getOrCreate()
 
     val postHistoryRawDF = spark.read.option("rowTag", "posthistory").format("xml")
-      .load(postXmlPath).select(explode(col("row")))
+      .load(postHistoryXmlPath).select(explode(col("row")))
 
     import spark.implicits._
     val structPostHistoryRawDF = postHistoryRawDF.select("col.*")
 
-    val renamedCommentDF = structPostHistoryRawDF.toDF(
+    val renamedPostHistoryDF = structPostHistoryRawDF.toDF(
       structPostHistoryRawDF
         .columns
         .map(x => x.replaceAll("_", "")): _*)
@@ -35,13 +35,13 @@ object PostHistoryXmlDataLoader {
     )).toDF("CloseReasonId")
     //CloseReasonId="test-field"
 
-    val renamedCommentDFCols = renamedCommentDF.columns.toSet
+    val renamedCommentDFCols = renamedPostHistoryDF.columns.toSet
     val optionalColumnCols = optionalPostHistoryColumnDF.columns.toSet
 
     val unionCols = renamedCommentDFCols ++ optionalColumnCols
 
     val postHistoryDataset: Dataset[PostHistoryData] =
-      renamedCommentDF
+      renamedPostHistoryDF
         .select(LoaderHandler.colMatcher(renamedCommentDFCols, unionCols): _*)
         .union(optionalPostHistoryColumnDF.select(LoaderHandler.colMatcher(optionalColumnCols, unionCols): _*))
         .as[PostHistoryData]
@@ -49,8 +49,5 @@ object PostHistoryXmlDataLoader {
     //postHistoryDataset.select(countDistinct("CloseReasonId")).show()
     postHistoryDataset
   }
-
-
-
 
 }

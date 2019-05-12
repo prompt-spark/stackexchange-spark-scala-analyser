@@ -1,12 +1,12 @@
 package io.loader
 
-import io.StackExchangeIODataSchema.StackExchangeInputSchema.TagsData
+import io.StackExchangeIODataSchema.StackExchangeInputSchema.PostData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
-object TagsXmlDataLoader {
-  def loadTagsDS(tagsXmlPath: String): Dataset[TagsData] = {
+object PostXmlDataLoader {
+  def loadPostDS(postXmlPath: String): Dataset[PostData] = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -19,22 +19,22 @@ object TagsXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val tagsRawDF = spark.read.option("rowTag", "tags").format("xml")
-      .load(tagsXmlPath).select(explode(col("row")))
+    val postRawDF = spark.read.option("rowTag", "posts").format("xml")
+      .load(postXmlPath).select(explode(col("row")))
 
     import spark.implicits._
-    val structTagsDF = tagsRawDF.select("col.*")
+    val structPostRawDF = postRawDF.select("col.*")
 
-    val renamedTagsDF = structTagsDF.toDF(
-      structTagsDF
+    val renamedPostDF = structPostRawDF.toDF(
+      structPostRawDF
         .columns
         .map(x => x.replaceAll("_", "")): _*)
 
-    val tagsDataset: Dataset[TagsData] =
-      renamedTagsDF
-        .as[TagsData]
+    val postDataset: Dataset[PostData] =
+      renamedPostDF
+      .as[PostData]
 
-    tagsDataset
+    postDataset
   }
 
 }
