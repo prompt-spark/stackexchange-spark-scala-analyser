@@ -14,16 +14,17 @@ object StackExchangeSchema {
                           CreationDate: String)
 
   case class PostHistoryData(
-                          PostHistoryID:Long,
                           PostHistoryTypeId:Long,
-                          PostId: Long,
+                          Id: Long,
                           RevisionGUID: String,
                           CreationDate: String,
                           UserId: Long,
                           UserDisplayName: String,
                           Comment: Option[String],
                           Text: String,
-                          CloseReasonId:Option[String]
+                          PostId: Long,
+                          VALUE: String,
+                          CloseReasonId: Option[String]=None
                         )
 
 }

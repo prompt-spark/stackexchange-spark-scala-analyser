@@ -16,7 +16,7 @@ class PostHistoryXmlDataLoaderSpec
         .loadPostHistoryDS(
           "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/PostHistory.xml")
         .columns
-        .length shouldBe 1
+        .length shouldBe 11
     }
   }
 }
