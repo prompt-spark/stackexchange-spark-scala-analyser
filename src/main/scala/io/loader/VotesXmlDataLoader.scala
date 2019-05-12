@@ -1,7 +1,7 @@
-package io
+package io.loader
 
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.{SparkConf, SparkContext}
 
 object VotesXmlDataLoader {
   def main(votesXmlPath: String): DataFrame = {

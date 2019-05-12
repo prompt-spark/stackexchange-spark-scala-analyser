@@ -1,4 +1,4 @@
-package io
+package io.loader
 
 import org.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}

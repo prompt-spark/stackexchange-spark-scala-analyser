@@ -1,10 +1,10 @@
-package io
+package io.loader
 
-import io.StackExchangeDataSchema.StackExchangeSchema.PostHistoryData
-
+import io.StackExchangeIODataSchema.StackExchangeInputSchema.PostHistoryData
+import io.api.LoaderHandler
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.functions.{col, explode, lit}
-import org.apache.spark.sql.{Column, Dataset, SparkSession}
+import org.apache.spark.sql.functions.{col, explode}
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 object PostHistoryXmlDataLoader {
   def loadPostHistoryDS(postXmlPath: String): Dataset[PostHistoryData] = {
@@ -42,20 +42,15 @@ object PostHistoryXmlDataLoader {
 
     val postHistoryDataset: Dataset[PostHistoryData] =
       renamedCommentDF
-        .select(colMatcher(renamedCommentDFCols, unionCols): _*)
-        .union(optionalColumnDF.select(colMatcher(optionalColumnCols, unionCols): _*))
+        .select(LoaderHandler.colMatcher(renamedCommentDFCols, unionCols): _*)
+        .union(optionalColumnDF.select(LoaderHandler.colMatcher(optionalColumnCols, unionCols): _*))
         .as[PostHistoryData]
 
+    //postHistoryDataset.select(countDistinct("CloseReasonId")).show()
     postHistoryDataset
   }
 
 
-  def colMatcher(optionalCols: Set[String], mainDFCols: Set[String]): List[Column] = {
-    mainDFCols.toList.map {
-      case x if optionalCols.contains(x) => col(x)
-      case x => lit(null).as(x)
-    }
-  }
 
 
 }

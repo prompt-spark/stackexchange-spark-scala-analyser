@@ -1,10 +1,10 @@
-package io
+package io.loader
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object UsersXmlDataLoader {
-  def main(usersXmlPath: String): DataFrame = {
+object PostsXmlDataLoader {
+  def main(postsXmlPath: String): DataFrame = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -17,7 +17,7 @@ object UsersXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    spark.read.option("rowTag", "users").format("xml").load(usersXmlPath)
+    spark.read.option("rowTag", "posts").format("xml").load(postsXmlPath)
 
   }
 }

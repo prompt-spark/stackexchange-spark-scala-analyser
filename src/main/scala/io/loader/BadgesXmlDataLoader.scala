@@ -1,9 +1,9 @@
-package io
+package io.loader
 
-import io.StackExchangeDataSchema.StackExchangeSchema.BadgeData
-import org.apache.spark.sql.{Dataset, SparkSession}
-import org.apache.spark.sql.functions._
+import io.StackExchangeIODataSchema.StackExchangeInputSchema.BadgeData
 import org.apache.spark.SparkConf
+import org.apache.spark.sql.functions.{col, explode}
+import org.apache.spark.sql.{Dataset, SparkSession}
 
 object BadgesXmlDataLoader {
 

@@ -1,6 +1,6 @@
-package io
+package io.loader
 
-import io.StackExchangeDataSchema.StackExchangeSchema.CommentsData
+import io.StackExchangeIODataSchema.StackExchangeInputSchema.CommentsData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}

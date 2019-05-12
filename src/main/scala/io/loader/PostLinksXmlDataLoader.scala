@@ -1,10 +1,10 @@
-package io
+package io.loader
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object TagsXmlDataLoader {
-  def main(tagsXmlPath: String): DataFrame = {
+object PostLinksXmlDataLoader {
+  def main(postLinksXmlPath: String): DataFrame = {
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -17,7 +17,10 @@ object TagsXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    spark.read.option("rowTag", "tags").format("xml").load(tagsXmlPath)
+    spark.read
+      .option("rowTag", "postlinks")
+      .format("xml")
+      .load(postLinksXmlPath)
 
   }
 }

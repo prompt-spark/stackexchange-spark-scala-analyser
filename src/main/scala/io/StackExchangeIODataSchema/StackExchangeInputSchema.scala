@@ -1,6 +1,6 @@
-package io.StackExchangeDataSchema
+package io.StackExchangeIODataSchema
 
-object StackExchangeSchema {
+object StackExchangeInputSchema {
 
   case class BadgeData(UserId: Long,
                        Name: String,
@@ -24,7 +24,7 @@ object StackExchangeSchema {
                           Text: String,
                           PostId: Long,
                           VALUE: String,
-                          CloseReasonId: Option[String]=None
+                          CloseReasonId: Option[String]
                         )
 
 }

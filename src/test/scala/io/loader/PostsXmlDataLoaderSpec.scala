@@ -1,9 +1,9 @@
-package io
+package io.loader
 
 import org.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
-class PostLinksXmlDataLoaderSpec
+class PostsXmlDataLoaderSpec
     extends FunSpec
     with SparkSpec
     with GivenWhenThen
@@ -12,9 +12,9 @@ class PostLinksXmlDataLoaderSpec
   describe("Column Numbers") {
 
     it("should check all the column numbers") {
-      PostLinksXmlDataLoader
+      PostsXmlDataLoader
         .main(
-          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/PostLinks.xml")
+          "/home/xargus/Documents/MyGit/sparkProj/src/main/resources/data/Posts.xml")
         .columns
         .length shouldBe 1
     }

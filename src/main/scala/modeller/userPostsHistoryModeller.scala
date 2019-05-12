@@ -1,6 +1,6 @@
 package modeller
 
-import io.UsersXmlDataLoader
+import io.loader.UsersXmlDataLoader
 import org.apache.hadoop.fs.Path
 
 object userPostsHistoryModeller {
