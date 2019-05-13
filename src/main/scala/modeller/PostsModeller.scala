@@ -21,33 +21,68 @@
 
 package modeller
 
-import io.ioSchema.StackExchangeInputSchema
-import io.loader.UsersXmlDataLoader
+import io.loader.{PostHistoryXmlDataLoader, PostXmlDataLoader}
+import modeller.modellerSchema.PostHistoryModelData
+import org.apache.spark.sql.functions.monotonically_increasing_id
 import org.apache.spark.sql.Dataset
+import org.apache.spark.sql.Encoders
 
 object PostsModeller {
 
-  def postHistory(path: String)= {
+  def postHistory(path: String): Dataset[PostHistoryModelData] = {
 
+    val postHistory = PostHistoryXmlDataLoader
+      .loadPostHistoryDS(path)
+      .drop("Id", "CreationDate")
 
+    val post = PostXmlDataLoader.loadPostDS(path)
+
+    val postsHistory = post.join(postHistory,
+                                 post.col("Id") ===
+                                   postHistory.col("PostId"))
+
+    val postsHistoryDS = postsHistory
+      .drop("Id")
+      .withColumn("Id", monotonically_increasing_id)
+      .select(
+        "Id",
+        "PostId",
+        "AcceptedAnswerId",
+        "AnswerCount",
+        "Body",
+        "ClosedDate",
+        "CommentCount",
+        "CommunityOwnedDate",
+        "FavoriteCount",
+        "LastActivityDate",
+        "LastEditDate",
+        "LastEditorDisplayName",
+        "LastEditorUserId",
+        "OwnerDisplayName",
+        "OwnerUserId",
+        "ParentId",
+        "PostTypeId",
+        "Score",
+        "Tags",
+        "Title",
+        "ViewCount",
+        "PostHistoryTypeId",
+        "RevisionGUID",
+        "UserId",
+        "UserDisplayName",
+        "Comment",
+        "Text",
+        "CloseReasonId",
+        "CreationDate"
+      )
+
+    postsHistoryDS.as[PostHistoryModelData](Encoders.product)
   }
 
+  def postLinks(path: String) = {}
 
-  def postLinks(path: String) = {
+  def postComments(path: String) = {}
 
-
-  }
-
-
-  def postComments(path: String) = {
-
-
-  }
-
-
-  def postVotes(path: String) = {
-
-
-  }
+  def postVotes(path: String) = {}
 
 }
