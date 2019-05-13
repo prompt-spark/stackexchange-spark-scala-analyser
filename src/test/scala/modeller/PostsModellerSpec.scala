@@ -52,4 +52,16 @@ class PostsModellerSpec
         .length shouldBe 24
     }
   }
+
+  describe("Column Numbers in postComments model") {
+
+    it("should check all the column numbers") {
+      PostsModeller
+        .postComments(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+        .columns
+        .length shouldBe 27
+    }
+  }
+
 }

@@ -23,11 +23,13 @@ package modeller
 
 import io.api.ModellerHandler
 import io.loader.{
+  CommentsXmlDataLoader,
   PostHistoryXmlDataLoader,
   PostLinksXmlDataLoader,
   PostXmlDataLoader
 }
 import modeller.ModellerSchema.PostsModellerSchema.{
+  PostCommentsModelData,
   PostHistoryModelData,
   PostLinksModelData
 }
@@ -43,7 +45,8 @@ object PostsModeller {
       .loadPostHistoryDS(path)
       .drop("Id", "CreationDate")
 
-    val post = PostXmlDataLoader.loadPostDS(path)
+    val post = PostXmlDataLoader
+      .loadPostDS(path)
 
     val postsHistoryJoinedDF = post.join(postHistory,
                                          post.col("Id") ===
@@ -80,7 +83,28 @@ object PostsModeller {
 
   }
 
-  def postComments(path: String) = {}
+  def postComments(path: String): Dataset[PostCommentsModelData] = {
+
+    val comments = CommentsXmlDataLoader
+      .loadCommentsDS(path)
+      .withColumnRenamed("Score", "CommentScore")
+      .drop("Score", "Id", "CreationDate")
+
+    val post = PostXmlDataLoader.loadPostDS(path)
+
+    val postCommentsJoinedDF = post
+      .join(comments,
+            post.col("Id") ===
+              comments.col("PostId"))
+
+    val postsCommentDS = postCommentsJoinedDF
+      .drop("Id")
+      .withColumn("Id", monotonically_increasing_id)
+      .select(ModellerHandler.getMembers[PostCommentsModelData].map(col): _*)
+
+    postsCommentDS.as[PostCommentsModelData](Encoders.product)
+
+  }
 
   def postVotes(path: String) = {}
 
