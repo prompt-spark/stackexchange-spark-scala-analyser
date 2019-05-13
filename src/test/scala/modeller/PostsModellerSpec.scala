@@ -64,4 +64,15 @@ class PostsModellerSpec
     }
   }
 
+  describe("Column Numbers in postVotes model") {
+
+    it("should check all the column numbers") {
+      PostsModeller
+        .postVotes(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+        .columns
+        .length shouldBe 25
+    }
+  }
+
 }

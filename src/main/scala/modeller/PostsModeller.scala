@@ -22,16 +22,12 @@
 package modeller
 
 import api.ModellerHelper
-import io.loader.{
-  CommentsXmlDataLoader,
-  PostHistoryXmlDataLoader,
-  PostLinksXmlDataLoader,
-  PostXmlDataLoader
-}
+import io.loader._
 import modeller.ModellerSchema.PostsModellerSchema.{
   PostCommentsModelData,
   PostHistoryModelData,
-  PostLinksModelData
+  PostLinksModelData,
+  PostVotesModelData
 }
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import org.apache.spark.sql.Dataset
@@ -106,6 +102,24 @@ object PostsModeller {
 
   }
 
-  def postVotes(path: String) = {}
+  def postVotes(path: String): Dataset[PostVotesModelData] = {
+    val votes = VotesXmlDataLoader
+      .loadVotesDS(path)
+      .drop("CreationDate")
+
+    val post = PostXmlDataLoader.loadPostDS(path)
+
+    val postVotesJoinedDF = post
+      .join(votes,
+            post.col("Id") ===
+              votes.col("PostId"))
+
+    val postsVotesDS = postVotesJoinedDF
+      .drop("Id")
+      .withColumn("Id", monotonically_increasing_id)
+      .select(ModellerHelper.getMembers[PostVotesModelData].map(col): _*)
+
+    postsVotesDS.as[PostVotesModelData](Encoders.product)
+  }
 
 }
