@@ -21,7 +21,6 @@
 
 package io.api
 
-import modeller.modellerSchema.PostHistoryModelData
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.{col, lit}
 
@@ -34,13 +33,5 @@ object LoaderHandler {
       case x                             => lit(null).as(x)
     }
   }
-
-  val caseCols = classOf[PostHistoryModelData].getDeclaredFields
-    .map { field =>
-      field.setAccessible(true)
-      val res = field.getName
-      field.setAccessible(false)
-      res
-    }
 
 }

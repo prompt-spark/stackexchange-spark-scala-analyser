@@ -23,7 +23,7 @@ package modeller
 
 import io.api.ModellerHandler
 import io.loader.{PostHistoryXmlDataLoader, PostXmlDataLoader}
-import modeller.modellerSchema.PostHistoryModelData
+import modeller.ModellerSchema.PostsModellerSchema.PostHistoryModelData
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoders
