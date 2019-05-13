@@ -27,7 +27,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object CommentsXmlDataLoader {
-  def loadCommentsDS(commentsXmlPath: String): Dataset[CommentsData] = {
+  def loadCommentsDS(path: String): Dataset[CommentsData] = {
+
+    val commentsXmlPath = path +"Comments.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

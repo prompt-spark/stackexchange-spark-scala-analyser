@@ -27,7 +27,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object UsersXmlDataLoader {
-  def loadUsersDS(usersXmlPath: String): Dataset[UsersData] = {
+  def loadUsersDS(path: String): Dataset[UsersData] = {
+
+    val usersXmlPath = path + "Users.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

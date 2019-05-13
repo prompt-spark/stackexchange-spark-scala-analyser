@@ -35,7 +35,7 @@ class PostsXmlDataLoaderSpec
     it("should check all the column numbers") {
       PostXmlDataLoader
         .loadPostDS(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Posts.xml")
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
         .columns
         .length shouldBe 22
     }

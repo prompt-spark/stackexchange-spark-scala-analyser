@@ -28,7 +28,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object PostHistoryXmlDataLoader {
-  def loadPostHistoryDS(postHistoryXmlPath: String): Dataset[PostHistoryData] = {
+  def loadPostHistoryDS(path: String): Dataset[PostHistoryData] = {
+
+    val postHistoryXmlPath = path + "PostHistory.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

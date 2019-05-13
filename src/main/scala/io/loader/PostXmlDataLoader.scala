@@ -27,7 +27,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object PostXmlDataLoader {
-  def loadPostDS(postXmlPath: String): Dataset[PostData] = {
+  def loadPostDS(path: String): Dataset[PostData] = {
+
+    val postXmlPath = path + "Posts.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

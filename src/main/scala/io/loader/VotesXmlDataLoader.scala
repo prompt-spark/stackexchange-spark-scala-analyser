@@ -27,7 +27,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object VotesXmlDataLoader {
-  def loadVotesDS(votesXmlPath: String): Dataset[VotesData] = {
+  def loadVotesDS(path: String): Dataset[VotesData] = {
+
+    val votesXmlPath = path + "Votes.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

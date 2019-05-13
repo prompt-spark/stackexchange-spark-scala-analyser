@@ -28,7 +28,9 @@ import org.apache.spark.sql.{Dataset, SparkSession}
 
 object BadgesXmlDataLoader {
 
-  def loadBadgeDS(badgeXmlPath: String): Dataset[BadgeData] = {
+  def loadBadgeDS(path: String): Dataset[BadgeData] = {
+
+    val badgeXmlPath = path+"Badges.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

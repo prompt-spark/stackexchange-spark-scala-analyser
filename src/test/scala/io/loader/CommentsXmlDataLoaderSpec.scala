@@ -35,7 +35,7 @@ class CommentsXmlDataLoaderSpec
     it("should check all the column numbers") {
       CommentsXmlDataLoader
         .loadCommentsDS(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Comments.xml")
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
         .columns
         .length shouldBe 6
     }

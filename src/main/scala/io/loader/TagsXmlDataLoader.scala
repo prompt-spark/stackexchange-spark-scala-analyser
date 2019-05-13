@@ -27,7 +27,9 @@ import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
 
 object TagsXmlDataLoader {
-  def loadTagsDS(tagsXmlPath: String): Dataset[TagsData] = {
+  def loadTagsDS(path: String): Dataset[TagsData] = {
+
+    val tagsXmlPath = path + "Tags.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")

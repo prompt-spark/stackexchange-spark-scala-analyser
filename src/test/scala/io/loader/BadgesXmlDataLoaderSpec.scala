@@ -35,7 +35,7 @@ class BadgesXmlDataLoaderSpec
     it("should check all the column numbers") {
       BadgesXmlDataLoader
         .loadBadgeDS(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Badges.xml")
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
         .columns
         .length shouldBe 3
     }

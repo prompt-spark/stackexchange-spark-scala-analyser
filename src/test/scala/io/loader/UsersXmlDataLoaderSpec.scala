@@ -35,7 +35,7 @@ class UsersXmlDataLoaderSpec
     it("should check all the column numbers") {
       UsersXmlDataLoader
         .loadUsersDS(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Users.xml")
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
         .columns
         .length shouldBe 14
     }
