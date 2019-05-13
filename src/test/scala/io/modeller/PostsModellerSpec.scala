@@ -1,10 +1,10 @@
 package io.modeller
 
-import modeller.UserPostsHistoryModeller
+import modeller.PostsModeller
 import org.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
-class UserPostsHistoryModellerSpec
+class PostsModellerSpec
   extends FunSpec
     with SparkSpec
     with GivenWhenThen
@@ -13,8 +13,8 @@ class UserPostsHistoryModellerSpec
   describe("Column Numbers") {
 
     it("should check all the column numbers") {
-      UserPostsHistoryModeller
-        .userPostHistory(
+      PostsModeller
+        .postHistory(
           "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Users.xml")
         .columns
         .length shouldBe 14

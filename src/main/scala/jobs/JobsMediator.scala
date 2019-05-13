@@ -2,13 +2,13 @@ package jobs
 
 import io.ioSchema.StackExchangeInputSchema
 import org.apache.hadoop.fs.Path
-import modeller.UserPostsHistoryModeller
+import modeller.{PostsModeller, UserModeller}
 import org.apache.spark.sql.Dataset
 
 trait JobsMediator {
-  def userProcessors(path: String): Dataset[StackExchangeInputSchema.UsersData] = {
+  def userModelProcessors(path: String)= {
 
-    UserPostsHistoryModeller.userPostHistory(path)
+    UserModeller
 
   }
 }

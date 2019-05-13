@@ -1,4 +1,4 @@
-name := "sparkProj"
+name := "stackexchange-spark-scala-analyser"
 
 version := "0.1"
 
@@ -19,6 +19,7 @@ libraryDependencies += "org.apache.spark" %% "spark-graphx" % "2.3.0"
 libraryDependencies += "com.databricks" %% "spark-xml" % "0.4.1"
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
+
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
 // needed to make examples run at least on Linux
