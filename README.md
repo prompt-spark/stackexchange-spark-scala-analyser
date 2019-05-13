@@ -8,8 +8,10 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
 
 # Modules
 
+    |--api
+       |--LoaderHelper
+       |--ModellerHelper
     |--io
-       |--api
        |--ioSchema
        |--loader
        |--writer

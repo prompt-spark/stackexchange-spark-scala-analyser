@@ -23,7 +23,7 @@ package api
 
 import scala.reflect.runtime.{universe => runTimeUniverse}
 
-object ModellerHandler {
+object ModellerHelper {
 
   def getCaseClassType[T: runTimeUniverse.TypeTag]
     : List[runTimeUniverse.Symbol] = {

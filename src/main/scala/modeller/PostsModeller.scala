@@ -21,7 +21,7 @@
 
 package modeller
 
-import api.ModellerHandler
+import api.ModellerHelper
 import io.loader.{
   CommentsXmlDataLoader,
   PostHistoryXmlDataLoader,
@@ -55,7 +55,7 @@ object PostsModeller {
     val postsHistoryDS = postsHistoryJoinedDF
       .drop("Id")
       .withColumn("Id", monotonically_increasing_id)
-      .select(ModellerHandler.getMembers[PostHistoryModelData].map(col): _*)
+      .select(ModellerHelper.getMembers[PostHistoryModelData].map(col): _*)
 
     postsHistoryDS.as[PostHistoryModelData](Encoders.product)
 
@@ -77,7 +77,7 @@ object PostsModeller {
     val postsLinkDS = postsLinkJoinedDF
       .drop("Id")
       .withColumn("Id", monotonically_increasing_id)
-      .select(ModellerHandler.getMembers[PostLinksModelData].map(col): _*)
+      .select(ModellerHelper.getMembers[PostLinksModelData].map(col): _*)
 
     postsLinkDS.as[PostLinksModelData](Encoders.product)
 
@@ -100,7 +100,7 @@ object PostsModeller {
     val postsCommentDS = postCommentsJoinedDF
       .drop("Id")
       .withColumn("Id", monotonically_increasing_id)
-      .select(ModellerHandler.getMembers[PostCommentsModelData].map(col): _*)
+      .select(ModellerHelper.getMembers[PostCommentsModelData].map(col): _*)
 
     postsCommentDS.as[PostCommentsModelData](Encoders.product)
 

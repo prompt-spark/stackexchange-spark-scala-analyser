@@ -24,7 +24,7 @@ package api
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.functions.{col, lit}
 
-object LoaderHandler {
+object LoaderHelper {
 
   def colMatcher(optionalCols: Set[String],
                  mainDFCols: Set[String]): List[Column] = {

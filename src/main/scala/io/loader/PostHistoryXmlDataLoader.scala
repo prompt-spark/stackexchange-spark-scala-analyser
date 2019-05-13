@@ -22,7 +22,7 @@
 package io.loader
 
 import io.ioSchema.StackExchangeInputSchema.PostHistoryData
-import api.LoaderHandler
+import api.LoaderHelper
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
@@ -68,9 +68,9 @@ object PostHistoryXmlDataLoader {
 
     val postHistoryDataset: Dataset[PostHistoryData] =
       renamedPostHistoryDF
-        .select(LoaderHandler.colMatcher(renamedCommentDFCols, unionCols): _*)
+        .select(LoaderHelper.colMatcher(renamedCommentDFCols, unionCols): _*)
         .union(optionalPostHistoryColumnDF.select(
-          LoaderHandler.colMatcher(optionalColumnCols, unionCols): _*))
+          LoaderHelper.colMatcher(optionalColumnCols, unionCols): _*))
         .as[PostHistoryData]
 
     //postHistoryDataset.select(countDistinct("CloseReasonId")).show()
