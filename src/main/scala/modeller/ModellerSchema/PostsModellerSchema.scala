@@ -34,7 +34,7 @@ object PostsModellerSchema {
       CreationDate: String
   )
 
-  case class PostlinksModeller(
+  case class PostLinksModelData(
       Id: Long,
       LinkTypeId: Long,
       PostId: Long,
@@ -58,7 +58,6 @@ object PostsModellerSchema {
       Score: Long,
       Tags: String,
       Title: String,
-      VALUE: String,
       ViewCount: Long
   )
 

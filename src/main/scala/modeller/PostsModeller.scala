@@ -22,8 +22,15 @@
 package modeller
 
 import io.api.ModellerHandler
-import io.loader.{PostHistoryXmlDataLoader, PostXmlDataLoader}
-import modeller.ModellerSchema.PostsModellerSchema.PostHistoryModelData
+import io.loader.{
+  PostHistoryXmlDataLoader,
+  PostLinksXmlDataLoader,
+  PostXmlDataLoader
+}
+import modeller.ModellerSchema.PostsModellerSchema.{
+  PostHistoryModelData,
+  PostLinksModelData
+}
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoders
@@ -38,11 +45,11 @@ object PostsModeller {
 
     val post = PostXmlDataLoader.loadPostDS(path)
 
-    val postsHistory = post.join(postHistory,
-                                 post.col("Id") ===
-                                   postHistory.col("PostId"))
+    val postsHistoryJoinedDF = post.join(postHistory,
+                                         post.col("Id") ===
+                                           postHistory.col("PostId"))
 
-    val postsHistoryDS = postsHistory
+    val postsHistoryDS = postsHistoryJoinedDF
       .drop("Id")
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHandler.getMembers[PostHistoryModelData].map(col): _*)
@@ -51,7 +58,27 @@ object PostsModeller {
 
   }
 
-  def postLinks(path: String) = {}
+  def postLinks(path: String): Dataset[PostLinksModelData] = {
+
+    val postLinks = PostLinksXmlDataLoader
+      .loadPostLinksDS(path)
+      .drop("Id", "CreationDate")
+
+    val post = PostXmlDataLoader.loadPostDS(path)
+
+    val postsLinkJoinedDF = post
+      .join(postLinks,
+            post.col("Id") ===
+              postLinks.col("PostId"))
+
+    val postsLinkDS = postsLinkJoinedDF
+      .drop("Id")
+      .withColumn("Id", monotonically_increasing_id)
+      .select(ModellerHandler.getMembers[PostLinksModelData].map(col): _*)
+
+    postsLinkDS.as[PostLinksModelData](Encoders.product)
+
+  }
 
   def postComments(path: String) = {}
 

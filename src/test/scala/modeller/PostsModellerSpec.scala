@@ -31,7 +31,7 @@ class PostsModellerSpec
     with GivenWhenThen
     with Matchers {
 
-  describe("Column Numbers") {
+  describe("Column Numbers in postHistory model") {
 
     it("should check all the column numbers") {
       PostsModeller
@@ -39,6 +39,17 @@ class PostsModellerSpec
           "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
         .columns
         .length shouldBe 29
+    }
+  }
+
+  describe("Column Numbers in postLinks model") {
+
+    it("should check all the column numbers") {
+      PostsModeller
+        .postLinks(
+          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+        .columns
+        .length shouldBe 24
     }
   }
 }

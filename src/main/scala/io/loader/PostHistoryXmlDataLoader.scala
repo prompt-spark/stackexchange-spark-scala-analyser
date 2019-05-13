@@ -22,7 +22,7 @@
 package io.loader
 
 import io.ioSchema.StackExchangeInputSchema.PostHistoryData
-import io.api.{LoaderHandler, ModellerHandler}
+import io.api.LoaderHandler
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}

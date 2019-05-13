@@ -56,8 +56,6 @@ object PostLinksXmlDataLoader {
       structPostLinksDF.columns
         .map(x => x.replaceAll("_", "")): _*)
 
-    renamedPostLinksDF.printSchema()
-
     val postLinksDataset: Dataset[PostLinksData] =
       renamedPostLinksDF
         .as[PostLinksData]
