@@ -21,7 +21,7 @@
 
 package modeller
 
-import io.api.ModellerHandler
+import api.ModellerHandler
 import io.loader.{
   CommentsXmlDataLoader,
   PostHistoryXmlDataLoader,

@@ -19,22 +19,19 @@
  * software for all its users.
  */
 
-package io.api
+package api
 
-import scala.reflect.runtime.{universe => runTimeUniverse}
+import org.apache.spark.sql.Column
+import org.apache.spark.sql.functions.{col, lit}
 
-object ModellerHandler {
+object LoaderHandler {
 
-  def getCaseClassType[T: runTimeUniverse.TypeTag]
-    : List[runTimeUniverse.Symbol] = {
-    runTimeUniverse.typeOf[T].members.toList
-  }
-
-  def getMembers[nameCaseClass: runTimeUniverse.TypeTag]: List[String] = {
-    getCaseClassType[nameCaseClass]
-      .filter(!_.isMethod)
-      .map(x => x.name.decodedName.toString.replaceAll(" ", ""))
-
+  def colMatcher(optionalCols: Set[String],
+                 mainDFCols: Set[String]): List[Column] = {
+    mainDFCols.toList.map {
+      case x if optionalCols.contains(x) => col(x)
+      case x                             => lit(null).as(x)
+    }
   }
 
 }

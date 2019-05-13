@@ -22,7 +22,7 @@
 package io.loader
 
 import io.ioSchema.StackExchangeInputSchema.PostLinksData
-import io.api.ModellerHandler
+import api.ModellerHandler
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
