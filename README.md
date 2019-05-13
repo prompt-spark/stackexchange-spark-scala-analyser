@@ -12,9 +12,9 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
        |--api
        |--ioSchema
        |--loader
-       |--visualizer
        |--writer
     |--Modeller
+    |--visualizer
     |--jobs
 
 # Description
