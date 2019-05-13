@@ -6,7 +6,7 @@ This project handles stackexchange archives data in Apache Spark with proper fra
 concepts. By an example of implementation any project in Spark-Scala can be in production pipeline.
 
 
-#Modules
+# Modules
 
     |--io
        |--api
@@ -17,9 +17,9 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
     |--Modeller
     |--jobs
 
-#Description
+# Description
 
-*A production-based Scala ETL pipeline for scalable data analysis.*
+* A production-based Scala ETL pipeline for scalable data analysis. *
 
 As a supports state-of-the-art dataflow engines such as 
 [Apache Spark](https://spark.apache.org/) as backend processor.
