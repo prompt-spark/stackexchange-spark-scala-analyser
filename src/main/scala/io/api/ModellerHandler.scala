@@ -21,26 +21,20 @@
 
 package io.api
 
-import modeller.modellerSchema.PostHistoryModelData
-import org.apache.spark.sql.Column
-import org.apache.spark.sql.functions.{col, lit}
+import scala.reflect.runtime.{universe => runTimeUniverse}
 
-object LoaderHandler {
+object ModellerHandler {
 
-  def colMatcher(optionalCols: Set[String],
-                 mainDFCols: Set[String]): List[Column] = {
-    mainDFCols.toList.map {
-      case x if optionalCols.contains(x) => col(x)
-      case x                             => lit(null).as(x)
-    }
+  def getCaseClassType[T: runTimeUniverse.TypeTag]
+    : List[runTimeUniverse.Symbol] = {
+    runTimeUniverse.typeOf[T].members.toList
   }
 
-  val caseCols = classOf[PostHistoryModelData].getDeclaredFields
-    .map { field =>
-      field.setAccessible(true)
-      val res = field.getName
-      field.setAccessible(false)
-      res
-    }
+  def getMembers[nameCaseClass: runTimeUniverse.TypeTag]: List[String] = {
+    getCaseClassType[nameCaseClass]
+      .filter(!_.isMethod)
+      .map(x => x.name.decodedName.toString.replaceAll(" ", ""))
+
+  }
 
 }

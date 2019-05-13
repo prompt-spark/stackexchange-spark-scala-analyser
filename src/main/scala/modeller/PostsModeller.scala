@@ -21,9 +21,10 @@
 
 package modeller
 
+import io.api.ModellerHandler
 import io.loader.{PostHistoryXmlDataLoader, PostXmlDataLoader}
 import modeller.modellerSchema.PostHistoryModelData
-import org.apache.spark.sql.functions.monotonically_increasing_id
+import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoders
 
@@ -44,39 +45,10 @@ object PostsModeller {
     val postsHistoryDS = postsHistory
       .drop("Id")
       .withColumn("Id", monotonically_increasing_id)
-      .select(
-        "Id",
-        "PostId",
-        "AcceptedAnswerId",
-        "AnswerCount",
-        "Body",
-        "ClosedDate",
-        "CommentCount",
-        "CommunityOwnedDate",
-        "FavoriteCount",
-        "LastActivityDate",
-        "LastEditDate",
-        "LastEditorDisplayName",
-        "LastEditorUserId",
-        "OwnerDisplayName",
-        "OwnerUserId",
-        "ParentId",
-        "PostTypeId",
-        "Score",
-        "Tags",
-        "Title",
-        "ViewCount",
-        "PostHistoryTypeId",
-        "RevisionGUID",
-        "UserId",
-        "UserDisplayName",
-        "Comment",
-        "Text",
-        "CloseReasonId",
-        "CreationDate"
-      )
+      .select(ModellerHandler.getMembers[PostHistoryModelData].map(col): _*)
 
     postsHistoryDS.as[PostHistoryModelData](Encoders.product)
+
   }
 
   def postLinks(path: String) = {}

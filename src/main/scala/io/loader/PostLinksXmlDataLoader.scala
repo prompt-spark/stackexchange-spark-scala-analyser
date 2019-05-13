@@ -22,7 +22,7 @@
 package io.loader
 
 import io.ioSchema.StackExchangeInputSchema.PostLinksData
-import io.api.LoaderHandler
+import io.api.ModellerHandler
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
 import org.apache.spark.sql.{Dataset, SparkSession}
@@ -43,15 +43,17 @@ object PostLinksXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val postLinksRawDF = spark.read.option("rowTag", "postlinks").format("xml")
-      .load(postLinksXmlPath).select(explode(col("row")))
+    val postLinksRawDF = spark.read
+      .option("rowTag", "postlinks")
+      .format("xml")
+      .load(postLinksXmlPath)
+      .select(explode(col("row")))
 
     import spark.implicits._
     val structPostLinksDF = postLinksRawDF.select("col.*")
 
     val renamedPostLinksDF = structPostLinksDF.toDF(
-      structPostLinksDF
-        .columns
+      structPostLinksDF.columns
         .map(x => x.replaceAll("_", "")): _*)
 
     renamedPostLinksDF.printSchema()
@@ -62,8 +64,5 @@ object PostLinksXmlDataLoader {
 
     postLinksDataset
   }
-
-
-
 
 }
