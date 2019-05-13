@@ -1,3 +1,5 @@
 package jobs
 
-object StackExchangeElasticSearchJob {}
+object StackExchangeElasticSearchJob {
+
+}
