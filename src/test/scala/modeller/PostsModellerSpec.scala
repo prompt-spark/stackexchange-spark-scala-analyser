@@ -13,11 +13,7 @@ class PostsModellerSpec
   describe("Column Numbers") {
 
     it("should check all the column numbers") {
-      PostsModeller
-        .postHistory(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/Users.xml")
-        .columns
-        .length shouldBe 14
+
     }
   }
 }

@@ -1,3 +1,3 @@
 package jobs
 
-class StackExchangeStreamingJob {}
+object StackExchangeStreamingJob {}

@@ -1,3 +1,3 @@
 package jobs
 
-class StackExchangeMLJob {}
+object StackExchangeMLJob {}

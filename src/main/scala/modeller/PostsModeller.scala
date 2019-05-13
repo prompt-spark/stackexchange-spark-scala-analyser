@@ -6,7 +6,7 @@ import org.apache.spark.sql.Dataset
 
 object PostsModeller {
 
-  def postHistory(path: String): Dataset[StackExchangeInputSchema.UsersData] = {
+  def postHistory(path: String)= {
 
 
   }

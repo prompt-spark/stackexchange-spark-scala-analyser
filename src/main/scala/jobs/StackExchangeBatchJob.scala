@@ -4,9 +4,10 @@ import io.ioSchema.StackExchangeInputSchema
 import org.apache.spark.sql.Dataset
 
 
-class StackExchangeBatchJob extends JobsMediator {
+object StackExchangeBatchJob extends JobsMediator {
 
-  def main(path: String): Dataset[StackExchangeInputSchema.UsersData] = {
-    userProcessors(path)
+  def main(path: String) = {
+    userModelProcessors(path)
+    postModelProcessors(path)
   }
 }
