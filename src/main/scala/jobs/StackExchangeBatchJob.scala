@@ -21,6 +21,7 @@
 
 package jobs
 
+import api.JobsMediator
 import io.ioSchema.StackExchangeInputSchema
 import org.apache.spark.sql.Dataset
 

@@ -21,6 +21,7 @@
 
 package jobs
 
+import api.JobsMediator
 import org.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
