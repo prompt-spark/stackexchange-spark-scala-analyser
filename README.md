@@ -11,12 +11,16 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
     |--api
        |--LoaderHelper
        |--ModellerHelper
+       |--visualizerHelper
+       |--JobMediator
     |--io
        |--ioSchema
        |--loader
        |--writer
     |--Modeller
+       |--ModellerSchema
     |--visualizer
+       |--VisualizerSchema
     |--jobs
 
 # Description
