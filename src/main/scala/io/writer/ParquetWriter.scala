@@ -21,7 +21,16 @@
 
 package io.writer
 
+import org.apache.spark.sql.Dataset
 
-object ParquetWriter {
+import scala.reflect.runtime.{universe => runTimeUniverse}
+
+class ParquetWriter[T: runTimeUniverse.TypeTag](outputPath: String, numberOfFiles: Int)
+    extends Serializable {
+
+  private val WRITE_MODE = "overwrite"
+
+  def write(data: Dataset[T]): Unit =
+    data.write.mode(WRITE_MODE).format("parquet").save(outputPath)
 
 }

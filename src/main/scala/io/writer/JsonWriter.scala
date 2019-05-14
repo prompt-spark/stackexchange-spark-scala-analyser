@@ -21,6 +21,16 @@
 
 package io.writer
 
-object JsonWriter {
+import org.apache.spark.sql.Dataset
+
+import scala.reflect.runtime.{universe => runTimeUniverse}
+
+class JsonWriter[T: runTimeUniverse.TypeTag](outputPath: String, numberOfFiles: Int)
+  extends Serializable {
+
+  private val WRITE_MODE = "overwrite"
+
+  def write(data: Dataset[T]): Unit =
+    data.write.option("header", "true").mode(WRITE_MODE).json(outputPath)
 
 }
