@@ -30,10 +30,12 @@ class StackExchangeBatchJobSpec
     with GivenWhenThen
     with Matchers {
 
-  describe("") {
+  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
-    it("") {
-      StackExchangeBatchJob
+  describe("count all the post modelles data") {
+
+    it("get count of all modells") {
+      StackExchangeBatchJob.batchjobRun(resourcePath +"/*/") shouldBe 84948
     }
   }
 }

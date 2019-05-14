@@ -22,14 +22,59 @@
 package jobs
 
 import api.JobsMediator
-import io.ioSchema.StackExchangeInputSchema
-import org.apache.spark.sql.Dataset
 
 
 object StackExchangeBatchJob extends JobsMediator {
 
-  def main(path: String) = {
-    userModelProcessors(path)
+  private val APP_NAME = getClass.getSimpleName
+  private val INPUT_PATH = "input_path"
+  private val OUTPUT_PATH = "output_path"
+
+  case class Config(
+                     inputPath: String = "",
+                     outputPath: String = ""
+
+                   )
+
+  def parseArgs(args: Array[String]): Config = {
+
+    val parser = new scopt.OptionParser[Config](APP_NAME) {
+      head(APP_NAME)
+
+      opt[String](INPUT_PATH)
+        .action((x, c) => c.copy(inputPath = x))
+        .required()
+        .text("Input Path for XML files")
+
+
+      opt[String](OUTPUT_PATH)
+        .action((x, c) => c.copy(outputPath = x))
+        .required()
+        .text("Path for saving JSON and Parquet file")
+
+    }
+
+    parser.parse(args, Config()) match {
+      case Some(config) => config
+      case None =>
+        println("Illegal arguments. Please see the usage.")
+        sys.exit(0)
+    }
+  }
+
+    def main(args: Array[String]): Unit = {
+      val config = parseArgs(args)
+
+      val inputPath = config.inputPath
+      val outputPath = config.outputPath
+
+      batchjobRun(inputPath)
+
+    }
+  def batchjobRun(path:String): Long ={
     postModelProcessors(path)
   }
-}
+
+
+  }
+// appname.jar postModelProcessors 1 postComments postHistory

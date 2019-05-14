@@ -22,6 +22,9 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 
+libraryDependencies += "com.github.scopt" %% "scopt" % "3.7.1"
+
+
 // needed to make examples run at least on Linux
 javaOptions in run += "-XX:MaxPermSize=128M"
 

@@ -5,16 +5,18 @@ import modeller.{PostsModeller, UserModeller}
 trait JobsMediator {
   def userModelProcessors(path: String)= {
 
-    UserModeller.userBadges(path)
-    UserModeller.userCommentsVotes(path)
-    UserModeller.userPosts(path)
+    //UserModeller.userBadges(path)
+    //UserModeller.userCommentsVotes(path)
+    //UserModeller.userPosts(path)
   }
 
-  def postModelProcessors(path: String)= {
+  def postModelProcessors(path: String): Long = {
 
-    PostsModeller.postComments(path)
-    //PostsModeller.postHistory(path)
-    PostsModeller.postLinks(path)
-    PostsModeller.postVotes(path)
+   val postComments = PostsModeller.postComments(path).cache()
+    val postHistory= PostsModeller.postHistory(path)
+    val postLinks=PostsModeller.postLinks(path)
+    val postVotes= PostsModeller.postVotes(path)
+
+    postComments.count()+postHistory.count()+postLinks.count()+postVotes.count()
   }
 }
