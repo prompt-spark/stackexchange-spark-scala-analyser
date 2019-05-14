@@ -30,12 +30,14 @@ class TagsXmlDataLoaderSpec
     with GivenWhenThen
     with Matchers {
 
+  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
+
   describe("Column Numbers") {
 
     it("should check all the column numbers") {
       TagsXmlDataLoader
         .loadTagsDS(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+          resourcePath +"/*/")
         .columns
         .length shouldBe 6
     }

@@ -31,12 +31,15 @@ class PostsModellerSpec
     with GivenWhenThen
     with Matchers {
 
+  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
+
   describe("Column Numbers in postHistory model") {
 
     it("should check all the column numbers") {
+      println(resourcePath)
       PostsModeller
         .postHistory(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+          resourcePath +"/*/")
         .columns
         .length shouldBe 29
     }
@@ -47,7 +50,7 @@ class PostsModellerSpec
     it("should check all the column numbers") {
       PostsModeller
         .postLinks(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+          resourcePath +"/*/")
         .columns
         .length shouldBe 24
     }
@@ -58,7 +61,7 @@ class PostsModellerSpec
     it("should check all the column numbers") {
       PostsModeller
         .postComments(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+          resourcePath +"/*/")
         .columns
         .length shouldBe 27
     }
@@ -69,7 +72,7 @@ class PostsModellerSpec
     it("should check all the column numbers") {
       PostsModeller
         .postVotes(
-          "/home/xargus/Documents/stackexchange-me/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/")
+          resourcePath +"/*/")
         .columns
         .length shouldBe 25
     }

@@ -53,7 +53,7 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostHistoryModelData].map(col): _*)
 
-    postsHistoryDS.as[PostHistoryModelData](Encoders.product)
+    postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache
 
   }
 
