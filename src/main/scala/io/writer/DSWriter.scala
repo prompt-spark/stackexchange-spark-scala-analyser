@@ -21,19 +21,17 @@
 
 package io.writer
 
-import org.SparkSpec
-import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
+import org.apache.spark.sql.Dataset
 
-class JsonWriterSpec
-  extends FunSpec
-    with SparkSpec
-    with GivenWhenThen
-    with Matchers {
+object DSWriter
+  extends Serializable {
 
-  describe("") {
-
-    it("") {
-
-    }
+  def writeJson[T <: Product](data: Dataset[T], outputPath : String): Unit ={
+    data.write.mode("overwrite").option("header", "true").json(outputPath)
   }
+
+  def writeParquet[T <: Product](data: Dataset[T], outputPath : String): Unit ={
+    data.write.mode("overwrite").option("header", "true").parquet(outputPath)
+  }
+
 }

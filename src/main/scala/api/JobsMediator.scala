@@ -13,7 +13,7 @@ trait JobsMediator {
   def postModelProcessors(path: String)= {
 
     PostsModeller.postComments(path)
-    PostsModeller.postHistory(path)
+    //PostsModeller.postHistory(path)
     PostsModeller.postLinks(path)
     PostsModeller.postVotes(path)
   }

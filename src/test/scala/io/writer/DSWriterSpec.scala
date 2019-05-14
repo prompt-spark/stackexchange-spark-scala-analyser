@@ -21,16 +21,19 @@
 
 package io.writer
 
-import org.apache.spark.sql.Dataset
+import org.SparkSpec
+import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
-import scala.reflect.runtime.{universe => runTimeUniverse}
+class DSWriterSpec
+  extends FunSpec
+    with SparkSpec
+    with GivenWhenThen
+    with Matchers {
 
-class ParquetWriter[T: runTimeUniverse.TypeTag](outputPath: String, numberOfFiles: Int)
-    extends Serializable {
+  describe("") {
 
-  private val WRITE_MODE = "overwrite"
+    it("") {
 
-  def write(data: Dataset[T]): Unit =
-    data.write.mode(WRITE_MODE).format("parquet").save(outputPath)
-
+    }
+  }
 }

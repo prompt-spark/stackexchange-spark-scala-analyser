@@ -23,19 +23,14 @@ package modeller
 
 import api.ModellerHelper
 import io.loader._
-import modeller.ModellerSchema.PostsModellerSchema.{
-  PostCommentsModelData,
-  PostHistoryModelData,
-  PostLinksModelData,
-  PostVotesModelData
-}
+import io.writer.DSWriter
+import modeller.ModellerSchema.PostsModellerSchema.{PostCommentsModelData, PostHistoryModelData, PostLinksModelData, PostVotesModelData}
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
-import org.apache.spark.sql.Dataset
-import org.apache.spark.sql.Encoders
+import org.apache.spark.sql.{Dataset, Encoder, Encoders}
 
 object PostsModeller {
 
-  def postHistory(path: String): Dataset[PostHistoryModelData] = {
+  def postHistory(path: String) : Dataset[PostHistoryModelData] = {
 
     val postHistory = PostHistoryXmlDataLoader
       .loadPostHistoryDS(path)
@@ -53,7 +48,10 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostHistoryModelData].map(col): _*)
 
-    postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache
+    //DSWriter.writeJson(postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache(),
+      //"/home/abhishekv11/Desktop/jsonTest")
+
+    postsHistoryDS.as[PostHistoryModelData](Encoders.product)
 
   }
 
@@ -76,7 +74,6 @@ object PostsModeller {
       .select(ModellerHelper.getMembers[PostLinksModelData].map(col): _*)
 
     postsLinkDS.as[PostLinksModelData](Encoders.product)
-
   }
 
   def postComments(path: String): Dataset[PostCommentsModelData] = {

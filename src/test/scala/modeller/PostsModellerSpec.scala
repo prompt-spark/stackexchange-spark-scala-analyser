@@ -21,9 +21,22 @@
 
 package io.modeller
 
+
 import modeller.PostsModeller
 import org.SparkSpec
+import org.apache.spark.sql.types.{StructField, StructType}
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
+import org.apache.spark.sql.{Encoder, Encoders}
+
+
+import scala.reflect.ClassTag
+
+
+class TestEncoder[T:ClassTag](fields: Seq[StructField]) extends Encoder[T]{
+  override def schema: StructType = StructType(fields)
+  override def clsTag: ClassTag[T] = implicitly[ClassTag[T]]
+}
+
 
 class PostsModellerSpec
     extends FunSpec
@@ -31,15 +44,18 @@ class PostsModellerSpec
     with GivenWhenThen
     with Matchers {
 
+
   val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
+
   describe("Column Numbers in postHistory model") {
+
 
     it("should check all the column numbers") {
       println(resourcePath)
       PostsModeller
         .postHistory(
-          resourcePath +"/*/")
+          resourcePath +"/*/")(Encoders.product)
         .columns
         .length shouldBe 29
     }
