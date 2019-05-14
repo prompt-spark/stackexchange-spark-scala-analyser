@@ -52,10 +52,9 @@ class PostsModellerSpec
 
 
     it("should check all the column numbers") {
-      println(resourcePath)
       PostsModeller
         .postHistory(
-          resourcePath +"/*/")(Encoders.product)
+          resourcePath +"/*/")//(Encoders.product)
         .columns
         .length shouldBe 29
     }

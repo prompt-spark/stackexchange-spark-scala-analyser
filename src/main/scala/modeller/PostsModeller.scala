@@ -51,7 +51,7 @@ object PostsModeller {
     //DSWriter.writeJson(postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache(),
       //"/home/abhishekv11/Desktop/jsonTest")
 
-    postsHistoryDS.as[PostHistoryModelData](Encoders.product)
+    postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache()
 
   }
 
