@@ -21,7 +21,10 @@
 
 package io.writer
 
-import org.apache.spark.sql.Dataset
+import org.apache.avro.data.Json
+import org.apache.spark.sql.{Dataset, Encoders}
+
+import scala.collection.parallel.immutable.ParVector
 
 object DSWriter
   extends Serializable {
@@ -29,6 +32,13 @@ object DSWriter
   def writeJson[T <: Product](data: Dataset[T], outputPath : String): Unit ={
     data.write.mode("overwrite").option("header", "true").json(outputPath)
   }
+
+  def parrallelWriter[T <: Product](data: Seq[Dataset[T]], outputPath : String, writerType:String): Unit =
+    data.foreach {
+      case dataset if writerType=="parquet" => writeJson(dataset, outputPath)
+      case dataset if writerType=="json" => writeParquet(dataset, outputPath)
+    }
+
 
   def writeParquet[T <: Product](data: Dataset[T], outputPath : String): Unit ={
     data.write.mode("overwrite").option("header", "true").parquet(outputPath)

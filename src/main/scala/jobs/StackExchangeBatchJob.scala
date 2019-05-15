@@ -22,6 +22,8 @@
 package jobs
 
 import api.JobsMediator
+import org.apache.spark.{SparkConf, SparkContext}
+
 
 object StackExchangeBatchJob extends JobsMediator {
 
@@ -30,9 +32,9 @@ object StackExchangeBatchJob extends JobsMediator {
   private val OUTPUT_PATH = "output_path"
 
   case class Config(
-      inputPath: String = "",
-      outputPath: String = ""
-  )
+                     inputPath: String = "",
+                     outputPath: String = ""
+                   )
 
   def parseArgs(args: Array[String]): Config = {
 
@@ -72,5 +74,25 @@ object StackExchangeBatchJob extends JobsMediator {
   def batchjobRun(inputPath: String, outputPath: String): Long = {
     postModelProcessors(inputPath, outputPath)
   }
+
+  private def sparkContext(appName: String, isLocal: Boolean): SparkContext = {
+    val sparkConf = new SparkConf().setAppName(appName)
+    if (isLocal) {
+      sparkConf.setMaster("local")
+    }
+    new SparkContext(sparkConf)
+  }
+
+
+
+
+
+//spark-submit --master local\
+// --class jobs.StackExchangeBatchJob\
+// --packages com.databricks:spark-xml_2.11:0.4.1 \
+//   /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar\
+//    --input_path /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/\
+//       --output_path /home/abhishekv11/Desktop/writerTest
+
 
 }

@@ -1,10 +1,16 @@
 package api
 
 import io.writer.DSWriter
+import io.writer.DSWriter.writeJson
+import modeller.ModellerSchema.PostsModellerSchema
 import modeller.{PostsModeller, UserModeller}
+import org.apache.spark.sql.Dataset
+
+import scala.collection.parallel.immutable.ParVector
 
 trait JobsMediator {
-  def userModelProcessors(path: String) = {
+
+  def userModelProcessors(path: String): Unit = {
 
     //UserModeller.userBadges(path)
     //UserModeller.userCommentsVotes(path)
@@ -18,12 +24,23 @@ trait JobsMediator {
     val postLinks = PostsModeller.postLinks(inputPath).cache()
     val postVotes = PostsModeller.postVotes(inputPath).cache()
 
-    DSWriter.writeJson(postComments, outputPath + "/Coments")
-    DSWriter.writeJson(postHistory, outputPath + "/History")
-    DSWriter.writeJson(postLinks, outputPath + "/Links")
-    DSWriter.writeJson(postVotes, outputPath + "/Votes")
+    val parVector = ParVector(
+      (postComments, outputPath + "/Coments"),
+      (postHistory, outputPath + "/History"),
+      (postLinks, outputPath + "/Links"),
+      (postVotes, outputPath + "/Votes")
+    )
 
-    postComments.count() + postHistory.count() + postLinks.count() + postVotes
-      .count()
+    parVector.foreach{
+      case (data,out) => data.write.mode("overwrite").option("header", "true").json(out)
+    }
+
+    //DSWriter.parrallelWriter(parVector,outputPath,"parquet")
+
+    postComments.count() +
+      postHistory.count() +
+      postLinks.count() +
+      postVotes.count()
   }
+
 }
