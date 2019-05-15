@@ -23,7 +23,6 @@ package jobs
 
 import api.JobsMediator
 
-
 object StackExchangeBatchJob extends JobsMediator {
 
   private val APP_NAME = getClass.getSimpleName
@@ -31,10 +30,9 @@ object StackExchangeBatchJob extends JobsMediator {
   private val OUTPUT_PATH = "output_path"
 
   case class Config(
-                     inputPath: String = "",
-                     outputPath: String = ""
-
-                   )
+      inputPath: String = "",
+      outputPath: String = ""
+  )
 
   def parseArgs(args: Array[String]): Config = {
 
@@ -46,7 +44,6 @@ object StackExchangeBatchJob extends JobsMediator {
         .required()
         .text("Input Path for XML files")
 
-
       opt[String](OUTPUT_PATH)
         .action((x, c) => c.copy(outputPath = x))
         .required()
@@ -57,24 +54,23 @@ object StackExchangeBatchJob extends JobsMediator {
     parser.parse(args, Config()) match {
       case Some(config) => config
       case None =>
-        println("Illegal arguments. Please see the usage.")
+        println("Illegal arguments.")
         sys.exit(0)
     }
   }
 
-    def main(args: Array[String]): Unit = {
-      val config = parseArgs(args)
+  def main(args: Array[String]): Unit = {
+    val config = parseArgs(args)
 
-      val inputPath = config.inputPath
-      val outputPath = config.outputPath
+    val inputPath = config.inputPath
+    val outputPath = config.outputPath
 
-      batchjobRun(inputPath)
-
-    }
-  def batchjobRun(path:String): Long ={
-    postModelProcessors(path)
-  }
-
+    batchjobRun(inputPath, outputPath)
 
   }
-// appname.jar postModelProcessors 1 postComments postHistory
+
+  def batchjobRun(inputPath: String, outputPath: String): Long = {
+    postModelProcessors(inputPath, outputPath)
+  }
+
+}

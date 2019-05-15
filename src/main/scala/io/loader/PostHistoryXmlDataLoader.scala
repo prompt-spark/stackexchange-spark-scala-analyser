@@ -73,7 +73,6 @@ object PostHistoryXmlDataLoader {
           LoaderHelper.colMatcher(optionalColumnCols, unionCols): _*))
         .as[PostHistoryData]
 
-    //postHistoryDataset.select(countDistinct("CloseReasonId")).show()
     postHistoryDataset
   }
 

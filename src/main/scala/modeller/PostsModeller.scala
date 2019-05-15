@@ -24,13 +24,18 @@ package modeller
 import api.ModellerHelper
 import io.loader._
 import io.writer.DSWriter
-import modeller.ModellerSchema.PostsModellerSchema.{PostCommentsModelData, PostHistoryModelData, PostLinksModelData, PostVotesModelData}
+import modeller.ModellerSchema.PostsModellerSchema.{
+  PostCommentsModelData,
+  PostHistoryModelData,
+  PostLinksModelData,
+  PostVotesModelData
+}
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import org.apache.spark.sql.{Dataset, Encoder, Encoders}
 
 object PostsModeller {
 
-  def postHistory(path: String) : Dataset[PostHistoryModelData] = {
+  def postHistory(path: String): Dataset[PostHistoryModelData] = {
 
     val postHistory = PostHistoryXmlDataLoader
       .loadPostHistoryDS(path)
@@ -49,7 +54,7 @@ object PostsModeller {
       .select(ModellerHelper.getMembers[PostHistoryModelData].map(col): _*)
 
     //DSWriter.writeJson(postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache(),
-      //"/home/abhishekv11/Desktop/jsonTest")
+    //"/home/abhishekv11/Desktop/jsonTest")
 
     postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache()
 
@@ -73,7 +78,7 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostLinksModelData].map(col): _*)
 
-    postsLinkDS.as[PostLinksModelData](Encoders.product)
+    postsLinkDS.as[PostLinksModelData](Encoders.product).cache()
   }
 
   def postComments(path: String): Dataset[PostCommentsModelData] = {
@@ -95,7 +100,7 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostCommentsModelData].map(col): _*)
 
-    postsCommentDS.as[PostCommentsModelData](Encoders.product)
+    postsCommentDS.as[PostCommentsModelData](Encoders.product).cache()
 
   }
 
@@ -116,7 +121,7 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostVotesModelData].map(col): _*)
 
-    postsVotesDS.as[PostVotesModelData](Encoders.product)
+    postsVotesDS.as[PostVotesModelData](Encoders.product).cache()
   }
 
 }

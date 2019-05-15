@@ -25,17 +25,20 @@ import org.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
 class StackExchangeBatchJobSpec
-  extends FunSpec
+    extends FunSpec
     with SparkSpec
     with GivenWhenThen
     with Matchers {
 
-  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
+  val resourcePath: String =
+    getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
   describe("count all the post modelles data") {
 
     it("get count of all modells") {
-      StackExchangeBatchJob.batchjobRun(resourcePath +"/*/") shouldBe 84948
+      StackExchangeBatchJob.batchjobRun(
+        resourcePath + "/*/",
+        "/home/xargus/Desktop/writerTest") shouldBe 84948
     }
   }
 }
