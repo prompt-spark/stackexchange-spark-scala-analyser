@@ -8,7 +8,7 @@ import org.apache.spark.sql.Dataset
 
 import scala.collection.parallel.immutable.ParVector
 
-trait JobsMediator {
+trait PostUserModelProcessor {
 
   def userModelProcessors(path: String): Unit = {
 

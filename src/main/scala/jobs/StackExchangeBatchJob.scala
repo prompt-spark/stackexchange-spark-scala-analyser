@@ -21,11 +21,11 @@
 
 package jobs
 
-import api.JobsMediator
+import api.PostUserModelProcessor
 import org.apache.spark.{SparkConf, SparkContext}
 
 
-object StackExchangeBatchJob extends JobsMediator {
+object StackExchangeBatchJob extends PostUserModelProcessor {
 
   private val APP_NAME = getClass.getSimpleName
   private val INPUT_PATH = "input_path"
@@ -87,11 +87,11 @@ object StackExchangeBatchJob extends JobsMediator {
 
 
 
-//spark-submit --master local\
-// --class jobs.StackExchangeBatchJob\
-// --packages com.databricks:spark-xml_2.11:0.4.1 \
-//   /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar\
-//    --input_path /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/\
+//  spark-submit --master local\
+//  --class jobs.StackExchangeBatchJob\
+//    --packages com.databricks:spark-xml_2.11:0.4.1 \
+//  /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar\
+//    --input_path '/home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/'\
 //       --output_path /home/abhishekv11/Desktop/writerTest
 
 
