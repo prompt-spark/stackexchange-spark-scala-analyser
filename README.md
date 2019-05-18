@@ -8,7 +8,7 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
 
 # Modules
 
-    |--api
+    |--com.promptscalaspark.stackexchange.api
        |--LoaderHelper
        |--ModellerHelper
        |--visualizerHelper
@@ -21,7 +21,7 @@ concepts. By an example of implementation any project in Spark-Scala can be in p
        |--ModellerSchema
     |--visualizer
        |--VisualizerSchema
-    |--jobs
+    |--com.promptscalaspark.stackexchange.jobs
 
 # Description
 
