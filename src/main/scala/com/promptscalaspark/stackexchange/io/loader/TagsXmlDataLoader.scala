@@ -21,10 +21,11 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.TagsData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object TagsXmlDataLoader {
   def loadTagsDS(path: String): Dataset[TagsData] = {
@@ -42,20 +43,23 @@ object TagsXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val tagsRawDF = spark.read.option("rowTag", "tags").format("xml")
-      .load(tagsXmlPath).select(explode(col("row")))
+    val tagsRawDF = spark.read
+      .option("rowTag", "tags")
+      .format("xml")
+      .load(tagsXmlPath)
 
-    import spark.implicits._
-    val structTagsDF = tagsRawDF.select("col.*")
-
-    val renamedTagsDF = structTagsDF.toDF(
-      structTagsDF
-        .columns
-        .map(x => x.replaceAll("_", "")): _*)
+    val explodedMappedTagData = tagsRawDF
+      .select(explode(col("row")))
+      .select(
+        LoaderHelper
+          .getMembers[TagsData]
+          .map(x => col("col._" + x)): _*)
 
     val tagsDataset: Dataset[TagsData] =
-      renamedTagsDF
-        .as[TagsData]
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedTagData, "_", "")
+        .as[TagsData](Encoders.product)
+        .cache()
 
     tagsDataset
   }

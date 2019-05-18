@@ -26,7 +26,7 @@ libraryDependencies += "com.github.scopt" %% "scopt" % "3.7.1"
 
 
 // needed to make examples run at least on Linux
-javaOptions in run += "-XX:MaxPermSize=128M"
+javaOptions in run += "-XX:MaxPermSize=256M"
 
 scalacOptions += "-target:jvm-1.8"
 parallelExecution in Test := false//just for local, not for cluster

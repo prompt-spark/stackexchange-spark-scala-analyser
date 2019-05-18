@@ -50,13 +50,13 @@ object LoaderHelper {
 
   def removeSpecialCharsFromCols(
                                   data: DataFrame,
-                                  replaceFrom: String,
+                                  replace: String,
                                   replaceWith: String): DataFrame= {
     data.columns.foldLeft(data) { (renamedDf, colname) =>
       renamedDf
         .withColumnRenamed(
           colname,
-          colname.replace(replaceFrom, replaceWith))
+          colname.replace(replace, replaceWith))
     }
   }
 

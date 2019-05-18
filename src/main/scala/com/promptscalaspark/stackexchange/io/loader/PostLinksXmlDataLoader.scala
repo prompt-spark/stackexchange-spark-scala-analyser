@@ -21,10 +21,11 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.PostLinksData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object PostLinksXmlDataLoader {
   def loadPostLinksDS(path: String): Dataset[PostLinksData] = {
@@ -46,18 +47,19 @@ object PostLinksXmlDataLoader {
       .option("rowTag", "postlinks")
       .format("xml")
       .load(postLinksXmlPath)
+
+    val explodedMappedPostLinksData = postLinksRawDF
       .select(explode(col("row")))
-
-    import spark.implicits._
-    val structPostLinksDF = postLinksRawDF.select("col.*")
-
-    val renamedPostLinksDF = structPostLinksDF.toDF(
-      structPostLinksDF.columns
-        .map(x => x.replaceAll("_", "")): _*)
+      .select(
+        LoaderHelper
+          .getMembers[PostLinksData]
+          .map(x => col("col._" + x)): _*)
 
     val postLinksDataset: Dataset[PostLinksData] =
-      renamedPostLinksDF
-        .as[PostLinksData]
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedPostLinksData, "_", "")
+        .as[PostLinksData](Encoders.product)
+        .cache()
 
     postLinksDataset
   }

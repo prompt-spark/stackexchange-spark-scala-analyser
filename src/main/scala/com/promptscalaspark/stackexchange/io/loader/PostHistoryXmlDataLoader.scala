@@ -59,7 +59,6 @@ object PostHistoryXmlDataLoader {
     val optionalPostHistoryColumnDF = spark.sparkContext
       .parallelize(List("option-default-value"))
       .toDF("CloseReasonId")
-    //CloseReasonId="test-field"
 
     val renamedCommentDFCols = renamedPostHistoryDF.columns.toSet
     val optionalColumnCols = optionalPostHistoryColumnDF.columns.toSet

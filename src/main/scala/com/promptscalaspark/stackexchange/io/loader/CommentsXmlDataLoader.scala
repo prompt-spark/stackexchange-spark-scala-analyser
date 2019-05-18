@@ -21,15 +21,16 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.CommentsData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object CommentsXmlDataLoader {
   def loadCommentsDS(path: String): Dataset[CommentsData] = {
 
-    val commentsXmlPath = path +"Comments.xml"
+    val commentsXmlPath = path + "Comments.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -48,25 +49,18 @@ object CommentsXmlDataLoader {
         .format("xml")
         .load(commentsXmlPath)
 
-    val commentsMappedColnames = Seq("UserId",
-                                     "UserDisplayName",
-                                     "PostId",
-                                     "Text",
-                                     "Score",
-                                     "CreationDate")
-
-    import spark.implicits._
-
-    val commentDataset: Dataset[CommentsData] = commentsRawDF
+    val explodedMappedCommentsData = commentsRawDF
       .select(explode(col("row")))
-      .select("col._UserId",
-              "col._UserDisplayName",
-              "col._PostId",
-              "col._Text",
-              "col._Score",
-              "col._CreationDate")
-      .toDF(commentsMappedColnames: _*)
-      .as[CommentsData]
+      .select(
+        LoaderHelper
+          .getMembers[CommentsData]
+          .map(x => col("col._" + x)): _*)
+
+    val commentDataset: Dataset[CommentsData] =
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedCommentsData, "_", "")
+        .as[CommentsData](Encoders.product)
+        .cache()
 
     commentDataset
   }

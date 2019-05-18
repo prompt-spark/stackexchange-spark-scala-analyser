@@ -45,18 +45,22 @@ object BadgesXmlDataLoader {
         .getOrCreate()
 
     val badgesRawDF =
-      spark.read.option("rowTag", "badges").format("xml").load(badgeXmlPath)
+      spark.read
+        .option("rowTag", "badges")
+        .format("xml")
+        .load(badgeXmlPath)
 
     val explodedMappedBadgeData = badgesRawDF
       .select(explode(col("row")))
-      .select(LoaderHelper.getMembers[BadgeData].map(x => col("col._" + x)): _*)
+      .select(
+        LoaderHelper
+          .getMembers[BadgeData]
+          .map(x => col("col._" + x)): _*)
 
     val badgeDataset: Dataset[BadgeData] =
       LoaderHelper
-        .removeSpecialCharsFromCols(
-          explodedMappedBadgeData,
-          "_",
-          "").as[BadgeData](Encoders.product)
+        .removeSpecialCharsFromCols(explodedMappedBadgeData, "_", "")
+        .as[BadgeData](Encoders.product)
         .cache()
 
     badgeDataset

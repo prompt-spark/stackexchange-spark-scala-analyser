@@ -27,95 +27,95 @@ object StackExchangeInputSchema {
                        name: String,
                        date: String)
 
-  case class CommentsData(UserId: Long,
-                          UserDisplayName: String,
-                          PostId: Long,
-                          Text: String,
-                          Score: Long,
-                          CreationDate: String)
+  case class CommentsData(userId: Long,
+                          userDisplayName: String,
+                          postId: Long,
+                          text: String,
+                          score: Long,
+                          creationDate: String)
 
   case class PostHistoryData(
-                              PostHistoryTypeId: Long,
-                              Id: Long,
-                              RevisionGUID: String,
-                              CreationDate: String,
-                              UserId: Long,
-                              UserDisplayName: String,
-                              Comment: Option[String],
-                              Text: String,
-                              PostId: Long,
-                              VALUE: String,
-                              CloseReasonId: Option[String]
+                              postHistoryTypeId: Long,
+                              id: Long,
+                              revisionGUID: String,
+                              creationDate: String,
+                              userId: Long,
+                              userDisplayName: String,
+                              comment: Option[String],
+                              text: String,
+                              postId: Long,
+                              value: String,
+                              closeReasonId: Option[String]
                             )
 
   case class PostLinksData(
-                            CreationDate: String,
-                            Id: Long,
-                            LinkTypeId: Long,
-                            PostId: Long,
-                            RelatedPostId: Long,
-                            VALUE: String
+                            creationDate: String,
+                            id: Long,
+                            linkTypeId: Long,
+                            postId: Long,
+                            relatedPostId: Long,
+                            value: String
                           )
 
   case class VotesData(
-                        BountyAmount: Option[Long],
-                        CreationDate: String,
-                        Id: Long,
-                        PostId: Long,
-                        UserId: Option[Long],
-                        VALUE: String,
-                        VoteTypeId: Long
+                        bountyAmount: Option[Long],
+                        creationDate: String,
+                        id: Long,
+                        postId: Long,
+                        userId: Option[Long],
+                        value: String,
+                        voteTypeId: Long
                       )
 
   case class UsersData(
-                        AboutMe: String,
-                        AccountId: Long,
-                        CreationDate: String,
-                        DisplayName: String,
-                        DownVotes: Long,
-                        Id: Long,
-                        LastAccessDate: String,
-                        Location: String,
-                        ProfileImageUrl: String,
-                        Reputation: Long,
-                        UpVotes: Long,
-                        VALUE: String,
-                        Views: Long,
-                        WebsiteUrl: String
+                        aboutMe: String,
+                        accountId: Long,
+                        creationDate: String,
+                        displayName: String,
+                        downVotes: Long,
+                        id: Long,
+                        lastAccessDate: String,
+                        location: String,
+                        profileImageUrl: String,
+                        reputation: Long,
+                        upVotes: Long,
+                        value: String,
+                        views: Long,
+                        websiteUrl: String
                       )
 
   case class TagsData(
-                       Count: Long,
-                       ExcerptPostId: Long,
-                       Id: Long,
-                       TagName: String,
-                       VALUE: String,
-                       WikiPostId: Long
+                       count: Long,
+                       excerptPostId: Long,
+                       id: Long,
+                       tagName: String,
+                       value: String,
+                       wikiPostId: Long
                      )
 
   case class PostData(
-                       AcceptedAnswerId: Long ,
-                       AnswerCount: Long ,
-                       Body: String ,
-                       ClosedDate: String ,
-                       CommentCount: Long ,
-                       CommunityOwnedDate: String ,
-                       CreationDate: String ,
-                       FavoriteCount: Long ,
-                       Id: Long ,
-                       LastActivityDate: String ,
-                       LastEditDate: String ,
-                       LastEditorDisplayName: String ,
-                       LastEditorUserId: Long ,
-                       OwnerDisplayName: String ,
-                       OwnerUserId: Long ,
-                       ParentId: Long ,
-                       PostTypeId: Long ,
-                       Score: Long ,
-                       Tags: String ,
-                       Title: String ,
-                       VALUE: String ,
-                       ViewCount: Long
+                       acceptedAnswerId: Long ,
+                       answerCount: Long ,
+                       body: String ,
+                       closedDate: String ,
+                       commentCount: Long ,
+                       communityOwnedDate: String ,
+                       creationDate: String ,
+                       favoriteCount: Long ,
+                       id: Long ,
+                       lastActivityDate: String ,
+                       lastEditDate: String ,
+                       lastEditorDisplayName: String ,
+                       lastEditorUserId: Long ,
+                       ownerDisplayName: String ,
+                       ownerUserId: Long ,
+                       parentId: Long ,
+                       postTypeId: Long ,
+                       score: Long ,
+                       tags: String ,
+                       title: String ,
+                       value: String ,
+                       viewCount: Long
                      )
 
 }

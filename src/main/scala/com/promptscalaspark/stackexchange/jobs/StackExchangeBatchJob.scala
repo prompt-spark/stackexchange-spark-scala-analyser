@@ -87,12 +87,6 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
 
 
 
-//  spark-submit --master local\
-//  --class com.promptscalaspark.stackexchange.jobs.StackExchangeBatchJob\
-//    --packages com.databricks:spark-xml_2.11:0.4.1 \
-//  /home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar\
-//    --input_path '/home/abhishekv11/Documents/owngit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/'\
-//       --output_path /home/abhishekv11/Desktop/writerTest
-
+//    ./spark-submit --master local --class com.promptscalaspark.stackexchange.jobs.StackExchangeBatchJob  --packages com.databricks:spark-xml_2.11:0.4.1 /home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar  --input_path '/home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/'     --output_path /home/xargus/Desktop/writerTest
 
 }

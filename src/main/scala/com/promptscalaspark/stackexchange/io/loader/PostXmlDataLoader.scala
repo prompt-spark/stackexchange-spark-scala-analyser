@@ -21,10 +21,11 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.PostData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object PostXmlDataLoader {
   def loadPostDS(path: String): Dataset[PostData] = {
@@ -42,20 +43,23 @@ object PostXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val postRawDF = spark.read.option("rowTag", "posts").format("xml")
-      .load(postXmlPath).select(explode(col("row")))
+    val postRawDF = spark.read
+      .option("rowTag", "posts")
+      .format("xml")
+      .load(postXmlPath)
 
-    import spark.implicits._
-    val structPostRawDF = postRawDF.select("col.*")
-
-    val renamedPostDF = structPostRawDF.toDF(
-      structPostRawDF
-        .columns
-        .map(x => x.replaceAll("_", "")): _*)
+    val explodedMappedPostData = postRawDF
+      .select(explode(col("row")))
+      .select(
+        LoaderHelper
+          .getMembers[PostData]
+          .map(x => col("col._" + x)): _*)
 
     val postDataset: Dataset[PostData] =
-      renamedPostDF
-      .as[PostData]
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedPostData, "_", "")
+        .as[PostData](Encoders.product)
+        .cache()
 
     postDataset
   }

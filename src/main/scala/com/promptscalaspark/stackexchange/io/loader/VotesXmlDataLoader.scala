@@ -21,10 +21,11 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.VotesData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object VotesXmlDataLoader {
   def loadVotesDS(path: String): Dataset[VotesData] = {
@@ -42,20 +43,23 @@ object VotesXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val votesRawDF = spark.read.option("rowTag", "votes").format("xml")
-      .load(votesXmlPath).select(explode(col("row")))
+    val votesRawDF = spark.read
+      .option("rowTag", "votes")
+      .format("xml")
+      .load(votesXmlPath)
 
-    import spark.implicits._
-    val structVotesDF = votesRawDF.select("col.*")
-
-    val renamedVotesDF = structVotesDF.toDF(
-      structVotesDF
-        .columns
-        .map(x => x.replaceAll("_", "")): _*)
+    val explodedMappedVotesData = votesRawDF
+      .select(explode(col("row")))
+      .select(
+        LoaderHelper
+          .getMembers[VotesData]
+          .map(x => col("col._" + x)): _*)
 
     val votesDataset: Dataset[VotesData] =
-      renamedVotesDF
-        .as[VotesData]
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedVotesData, "_", "")
+        .as[VotesData](Encoders.product)
+        .cache()
 
     votesDataset
   }

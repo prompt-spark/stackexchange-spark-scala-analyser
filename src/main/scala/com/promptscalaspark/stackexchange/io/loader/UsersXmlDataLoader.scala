@@ -21,10 +21,11 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.UsersData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object UsersXmlDataLoader {
   def loadUsersDS(path: String): Dataset[UsersData] = {
@@ -42,20 +43,23 @@ object UsersXmlDataLoader {
         .master("local[*]")
         .getOrCreate()
 
-    val usersRawDF = spark.read.option("rowTag", "users").format("xml")
-      .load(usersXmlPath).select(explode(col("row")))
+    val usersRawDF = spark.read
+      .option("rowTag", "users")
+      .format("xml")
+      .load(usersXmlPath)
 
-    import spark.implicits._
-    val structUsersDF = usersRawDF.select("col.*")
-
-    val renamedUsersDF = structUsersDF.toDF(
-      structUsersDF
-        .columns
-        .map(x => x.replaceAll("_", "")): _*)
+    val explodedMappedUserData = usersRawDF
+      .select(explode(col("row")))
+      .select(
+        LoaderHelper
+          .getMembers[UsersData]
+          .map(x => col("col._" + x)): _*)
 
     val usersDataset: Dataset[UsersData] =
-      renamedUsersDF
-        .as[UsersData]
+      LoaderHelper
+        .removeSpecialCharsFromCols(explodedMappedUserData, "_", "")
+        .as[UsersData](Encoders.product)
+        .cache()
 
     usersDataset
   }
