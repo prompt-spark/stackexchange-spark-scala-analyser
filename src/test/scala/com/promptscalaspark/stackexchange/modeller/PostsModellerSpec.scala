@@ -19,22 +19,10 @@
  * software for all its users.
  */
 
-package io.modeller
-
-
+package com.promptscalaspark.stackexchange.modeller
 import com.promptscalaspark.stackexchange.SparkSpec
-import com.promptscalaspark.stackexchange.modeller.PostsModeller
-import org.apache.spark.sql.types.{StructField, StructType}
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
-import org.apache.spark.sql.{Encoder, Encoders}
 
-import scala.reflect.ClassTag
-
-
-class TestEncoder[T:ClassTag](fields: Seq[StructField]) extends Encoder[T]{
-  override def schema: StructType = StructType(fields)
-  override def clsTag: ClassTag[T] = implicitly[ClassTag[T]]
-}
 
 
 class PostsModellerSpec
