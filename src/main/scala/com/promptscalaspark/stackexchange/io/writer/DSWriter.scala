@@ -21,10 +21,7 @@
 
 package com.promptscalaspark.stackexchange.io.writer
 
-import org.apache.avro.data.Json
-import org.apache.spark.sql.{Dataset, Encoders}
-
-import scala.collection.parallel.immutable.ParVector
+import org.apache.spark.sql.Dataset
 
 object DSWriter
   extends Serializable {

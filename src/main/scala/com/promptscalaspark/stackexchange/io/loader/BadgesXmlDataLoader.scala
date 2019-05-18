@@ -21,16 +21,17 @@
 
 package com.promptscalaspark.stackexchange.io.loader
 
+import com.promptscalaspark.stackexchange.api.LoaderHelper
 import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema.BadgeData
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.functions.{col, explode}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 
 object BadgesXmlDataLoader {
 
   def loadBadgeDS(path: String): Dataset[BadgeData] = {
 
-    val badgeXmlPath = path+"Badges.xml"
+    val badgeXmlPath = path + "Badges.xml"
 
     val sparkConf = new SparkConf()
       .setAppName("stackExchange-spark-analyzer")
@@ -46,18 +47,18 @@ object BadgesXmlDataLoader {
     val badgesRawDF =
       spark.read.option("rowTag", "badges").format("xml").load(badgeXmlPath)
 
-    val badgeMappedColnames = Seq("UserId", "Name", "Date")
-
-    import spark.implicits._
-
-    val BadgeDataset: Dataset[BadgeData] = badgesRawDF
+    val explodedMappedBadgeData = badgesRawDF
       .select(explode(col("row")))
-      .select("col._UserId",
-              "col._Name",
-              "col._Date")
-      .toDF(badgeMappedColnames: _*)
-      .as[BadgeData]
+      .select(LoaderHelper.getMembers[BadgeData].map(x => col("col._" + x)): _*)
 
-    BadgeDataset
+    val badgeDataset: Dataset[BadgeData] =
+      LoaderHelper
+        .removeSpecialCharsFromCols(
+          explodedMappedBadgeData,
+          "_",
+          "").as[BadgeData](Encoders.product)
+        .cache()
+
+    badgeDataset
   }
 }

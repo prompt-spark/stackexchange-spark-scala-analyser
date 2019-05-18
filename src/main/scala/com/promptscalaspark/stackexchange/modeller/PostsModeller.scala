@@ -47,9 +47,6 @@ object PostsModeller {
       .withColumn("Id", monotonically_increasing_id)
       .select(ModellerHelper.getMembers[PostHistoryModelData].map(col): _*)
 
-    //DSWriter.writeJson(postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache(),
-    //"/home/abhishekv11/Desktop/jsonTest")
-
     postsHistoryDS.as[PostHistoryModelData](Encoders.product).cache()
 
   }
