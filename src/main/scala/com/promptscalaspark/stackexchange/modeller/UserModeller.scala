@@ -21,19 +21,10 @@
 
 package com.promptscalaspark.stackexchange.modeller
 
-import com.promptscalaspark.stackexchange.io.loader.{
-  BadgesXmlDataLoader,
-  CommentsXmlDataLoader,
-  PostXmlDataLoader,
-  UsersXmlDataLoader,
-  VotesXmlDataLoader
-}
-import com.promptscalaspark.stackexchange.modeller.ModellerSchema.UserModellerSchema.{
-  UserBadgesModelData,
-  UserCommentsVotesModelData,
-  UserPostModeldata
-}
-import org.apache.spark.sql.functions.monotonically_increasing_id
+import com.promptscalaspark.stackexchange.api.ModellerHelper
+import com.promptscalaspark.stackexchange.io.loader.{BadgesXmlDataLoader, CommentsXmlDataLoader, PostXmlDataLoader, UsersXmlDataLoader, VotesXmlDataLoader}
+import com.promptscalaspark.stackexchange.modeller.ModellerSchema.UserModellerSchema.{UserBadgesModelData, UserCommentsVotesModelData, UserPostModeldata}
+import org.apache.spark.sql.functions.{monotonically_increasing_id,col}
 import org.apache.spark.sql.{Dataset, Encoders}
 
 object UserModeller {
@@ -46,6 +37,7 @@ object UserModeller {
     val userBadgeJoinedDF = user.join(badges,
                                       user.col("Id") ===
                                         badges.col("userId"))
+      .select(ModellerHelper.getMembers[UserBadgesModelData].map(col): _*)
 
     userBadgeJoinedDF.as[UserBadgesModelData](Encoders.product).cache()
 
@@ -63,6 +55,7 @@ object UserModeller {
               posts.col("ownerUserId"))
       .drop("Id", "creationDate")
       .withColumn("Id", monotonically_increasing_id)
+      .select(ModellerHelper.getMembers[UserPostModeldata].map(col): _*)
 
     userPostsJoinedDF.as[UserPostModeldata](Encoders.product).cache()
 
@@ -83,6 +76,7 @@ object UserModeller {
                  userCommentsJoinedDF.col("id") === votes.col("userId"))
         .drop("Id", "creationDate")
         .withColumn("Id", monotonically_increasing_id)
+        .select(ModellerHelper.getMembers[UserCommentsVotesModelData].map(col): _*)
 
     userCommentsVotesJoinedDF.as[UserCommentsVotesModelData](Encoders.product).cache()
   }

@@ -37,7 +37,7 @@ class UserModellerSpec
       .userBadges(
         resourcePath +"/*/")
       .columns
-      .length shouldBe 17
+      .length shouldBe 13
   }
 
   it("should check all the column numbers for userPosts dataset") {
@@ -45,7 +45,7 @@ class UserModellerSpec
       .userPosts(
         resourcePath +"/*/")
       .columns
-      .length shouldBe 34
+      .length shouldBe 26
   }
 
   it("should check all the column numbers for userCommentsVotes dataset") {
@@ -53,7 +53,7 @@ class UserModellerSpec
       .userCommentsVotes(
         resourcePath +"/*/")
       .columns
-      .length shouldBe 21
+      .length shouldBe 17
   }
 
 }
