@@ -72,7 +72,7 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
   }
 
   def batchjobRun(inputPath: String, outputPath: String): Long = {
-    postModelProcessors(inputPath, outputPath)
+    userPostVotes(inputPath, outputPath)
   }
 
   private def sparkContext(appName: String, isLocal: Boolean): SparkContext = {

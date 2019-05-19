@@ -37,7 +37,7 @@ class StackExchangeBatchJobSpec
     it("get count of all modells") {
       StackExchangeBatchJob.batchjobRun(
         inputResourcePath + "/*/",
-        "/home/xargus/testResults") shouldBe 84948
+        "/home/xargus/testResults") shouldBe 5
     }
   }
 }

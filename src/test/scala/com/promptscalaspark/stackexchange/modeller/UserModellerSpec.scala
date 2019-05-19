@@ -25,33 +25,31 @@ import com.promptscalaspark.stackexchange.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
 class UserModellerSpec
-  extends FunSpec
+    extends FunSpec
     with SparkSpec
     with GivenWhenThen
     with Matchers {
 
-  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
+  val resourcePath: String =
+    getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
   it("should check all the column numbers for userBadges dataset") {
     UserModeller
-      .userBadges(
-        resourcePath +"/*/")
+      .userBadges(resourcePath + "/*/")
       .columns
       .length shouldBe 13
   }
 
   it("should check all the column numbers for userPosts dataset") {
     UserModeller
-      .userPosts(
-        resourcePath +"/*/")
+      .userPosts(resourcePath + "/*/")
       .columns
       .length shouldBe 26
   }
 
   it("should check all the column numbers for userCommentsVotes dataset") {
     UserModeller
-      .userCommentsVotes(
-        resourcePath +"/*/")
+      .userCommentsVotes(resourcePath + "/*/")
       .columns
       .length shouldBe 17
   }

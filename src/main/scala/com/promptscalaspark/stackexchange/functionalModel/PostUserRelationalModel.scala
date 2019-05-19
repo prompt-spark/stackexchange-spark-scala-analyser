@@ -1,42 +1,38 @@
 package com.promptscalaspark.stackexchange.functionalModel
 
-import com.promptscalaspark.stackexchange.modeller.PostsModeller
-
+import com.promptscalaspark.stackexchange.modeller.{PostsModeller, UserModeller}
+import org.apache.spark.sql.functions._
 import scala.collection.parallel.immutable.ParVector
 
 trait PostUserRelationalModel {
 
-  def userModelProcessors(path: String): Unit = {
+  def userPostVotes(inputPath: String, outputPath: String): Long = {
 
-    //UserModeller.userBadges(path)
-    //UserModeller.userCommentsVotes(path)
-    //UserModeller.userPosts(path)
-  }
+    val postComments = PostsModeller
+      .postComments(inputPath)
+      .withColumnRenamed("postId", "commentsPostId")
+      .cache()
+    val userVotes = UserModeller.userCommentsVotes(inputPath).withColumnRenamed("score", "commentsScore").cache()
 
-  def postModelProcessors(inputPath: String, outputPath: String): Long = {
-
-    val postComments = PostsModeller.postComments(inputPath).cache()
-    val postHistory = PostsModeller.postHistory(inputPath).cache()
-    val postLinks = PostsModeller.postLinks(inputPath).cache()
-    val postVotes = PostsModeller.postVotes(inputPath).cache()
+    val userPostVotesDs = postComments
+      .join(userVotes, postComments.col("userId") === userVotes.col("userId"))
+      .select("ownerUserId",
+              "postId",
+              "views",
+              "reputation","commentsScore")
+      .groupBy("views","reputation").agg(count("postId")
+      ,count("ownerUserId"),max(col("commentsScore")))
 
     val parVector = ParVector(
-      (postComments, outputPath + "/Coments"),
-      (postHistory, outputPath + "/History"),
-      (postLinks, outputPath + "/Links"),
-      (postVotes, outputPath + "/Votes")
-    )
+      (userPostVotesDs, outputPath + "/userPostVotes"))
 
-    parVector.foreach{
-      case (data,out) => data.write.mode("overwrite").option("header", "true").json(out)
+
+    parVector.foreach {
+      case (data, out) =>
+        data.coalesce(2).write.mode("overwrite").option("header", "true").json(out)
     }
 
-    //DSWriter.parrallelWriter(parVector,outputPath,"parquet")
-
-    postComments.count() +
-      postHistory.count() +
-      postLinks.count() +
-      postVotes.count()
+    userPostVotesDs.columns.length
   }
 
 }
