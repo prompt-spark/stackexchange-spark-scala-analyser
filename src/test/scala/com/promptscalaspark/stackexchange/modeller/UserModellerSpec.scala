@@ -22,6 +22,7 @@
 package io.modeller
 
 import com.promptscalaspark.stackexchange.SparkSpec
+import com.promptscalaspark.stackexchange.modeller.UserModeller
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
 class UserModellerSpec
@@ -30,10 +31,30 @@ class UserModellerSpec
     with GivenWhenThen
     with Matchers {
 
-  describe("Column Numbers") {
+  val resourcePath: String = getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
-    it("should check all the column numbers") {
-
-    }
+  it("should check all the column numbers for userBadges dataset") {
+    UserModeller
+      .userBadges(
+        resourcePath +"/*/")
+      .columns
+      .length shouldBe 17
   }
+
+  it("should check all the column numbers for userPosts dataset") {
+    UserModeller
+      .userPosts(
+        resourcePath +"/*/")
+      .columns
+      .length shouldBe 34
+  }
+
+  it("should check all the column numbers for userCommentsVotes dataset") {
+    UserModeller
+      .userCommentsVotes(
+        resourcePath +"/*/")
+      .columns
+      .length shouldBe 34
+  }
+
 }

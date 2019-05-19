@@ -21,27 +21,47 @@
 
 package com.promptscalaspark.stackexchange.modeller
 
-import com.promptscalaspark.stackexchange.io.ioSchema.StackExchangeInputSchema
-import org.apache.spark.sql.Dataset
+import com.promptscalaspark.stackexchange.io.loader.{BadgesXmlDataLoader, PostXmlDataLoader, UsersXmlDataLoader}
+import com.promptscalaspark.stackexchange.modeller.ModellerSchema.UserModellerSchema.{UserBadgesModelData, UserCommentsVotesModelData, UserCommentsVotesdata, UserPostModeldata}
+import org.apache.spark.sql.functions.monotonically_increasing_id
+import org.apache.spark.sql.{Dataset, Encoders}
 
 object UserModeller {
 
-  def userBadges(path: String) = {
+  def userBadges(path: String): Dataset[UserBadgesModelData] = {
 
+    val user = UsersXmlDataLoader.loadUsersDS(path)
+    val badges = BadgesXmlDataLoader.loadBadgeDS(path)
 
-  }
+    val userBadgeJoinedDF = user.join(badges,
+                                      user.col("Id") ===
+                                        badges.col("userId"))
 
-
-  def userPosts(path: String) = {
-
-
-  }
-
-
-  def userCommentsVotes(path: String) = {
-
+    userBadgeJoinedDF.as[UserBadgesModelData](Encoders.product).cache()
 
   }
 
+  def userPosts(path: String): Dataset[UserPostModeldata] = {
+
+    val user = UsersXmlDataLoader.loadUsersDS(path)
+    val posts =
+      PostXmlDataLoader.loadPostDS(path).withColumnRenamed("id", "postId")
+
+    val userPostsJoinedDF = user
+      .join(posts,
+            user.col("Id") ===
+              posts.col("ownerUserId"))
+      .drop("Id", "creationDate")
+      .withColumn("Id", monotonically_increasing_id)
+
+    userPostsJoinedDF.as[UserPostModeldata](Encoders.product).cache()
+
+  }
+
+  def userCommentsVotes(path: String): Dataset[UserCommentsVotesModelData] = {
+
+    val user = UsersXmlDataLoader.loadUsersDS(path)
+
+  }
 
 }
