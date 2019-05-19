@@ -21,8 +21,18 @@
 
 package com.promptscalaspark.stackexchange.modeller
 
-import com.promptscalaspark.stackexchange.io.loader.{BadgesXmlDataLoader, PostXmlDataLoader, UsersXmlDataLoader}
-import com.promptscalaspark.stackexchange.modeller.ModellerSchema.UserModellerSchema.{UserBadgesModelData, UserCommentsVotesModelData, UserCommentsVotesdata, UserPostModeldata}
+import com.promptscalaspark.stackexchange.io.loader.{
+  BadgesXmlDataLoader,
+  CommentsXmlDataLoader,
+  PostXmlDataLoader,
+  UsersXmlDataLoader,
+  VotesXmlDataLoader
+}
+import com.promptscalaspark.stackexchange.modeller.ModellerSchema.UserModellerSchema.{
+  UserBadgesModelData,
+  UserCommentsVotesModelData,
+  UserPostModeldata
+}
 import org.apache.spark.sql.functions.monotonically_increasing_id
 import org.apache.spark.sql.{Dataset, Encoders}
 
@@ -61,7 +71,20 @@ object UserModeller {
   def userCommentsVotes(path: String): Dataset[UserCommentsVotesModelData] = {
 
     val user = UsersXmlDataLoader.loadUsersDS(path)
+    val comments = CommentsXmlDataLoader.loadCommentsDS(path)
+    val votes = VotesXmlDataLoader.loadVotesDS(path)
 
+    val userCommentsJoinedDF =
+      user.join(comments, comments.col("userId") === user.col("id"))
+      .drop("userId","postId")
+
+    val userCommentsVotesJoinedDF =
+      votes.join(userCommentsJoinedDF,
+                 userCommentsJoinedDF.col("id") === votes.col("userId"))
+        .drop("Id", "creationDate")
+        .withColumn("Id", monotonically_increasing_id)
+
+    userCommentsVotesJoinedDF.as[UserCommentsVotesModelData](Encoders.product).cache()
   }
 
 }

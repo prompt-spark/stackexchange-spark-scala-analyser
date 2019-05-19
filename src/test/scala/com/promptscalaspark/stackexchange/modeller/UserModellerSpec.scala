@@ -19,10 +19,9 @@
  * software for all its users.
  */
 
-package io.modeller
+package com.promptscalaspark.stackexchange.modeller
 
 import com.promptscalaspark.stackexchange.SparkSpec
-import com.promptscalaspark.stackexchange.modeller.UserModeller
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
 class UserModellerSpec
@@ -54,7 +53,7 @@ class UserModellerSpec
       .userCommentsVotes(
         resourcePath +"/*/")
       .columns
-      .length shouldBe 34
+      .length shouldBe 21
   }
 
 }

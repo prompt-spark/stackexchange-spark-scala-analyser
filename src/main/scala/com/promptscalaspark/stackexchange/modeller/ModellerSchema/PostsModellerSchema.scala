@@ -116,7 +116,7 @@ object PostsModellerSchema {
       id: Long,
       bountyAmount: Option[Long],
       postId: Long,
-      pserId: Option[Long],
+      userId: Option[Long],
       voteTypeId: Long,
       acceptedAnswerId: Long,
       answerCount: Long,

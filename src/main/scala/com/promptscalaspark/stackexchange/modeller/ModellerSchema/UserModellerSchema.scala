@@ -75,7 +75,6 @@ object UserModellerSchema {
       postId: Long,
       text: String,
       score: Long,
-      creationDate: String,
       aboutMe: String,
       accountId: Long,
       displayName: String,
@@ -85,7 +84,6 @@ object UserModellerSchema {
       profileImageUrl: String,
       reputation: Long,
       upVotes: Long,
-      value: String,
       views: Long,
       websiteUrl: String
   )
