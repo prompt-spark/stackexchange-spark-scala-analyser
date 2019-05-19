@@ -24,17 +24,18 @@ package com.promptscalaspark.stackexchange.jobs
 import com.promptscalaspark.stackexchange.functionalModel.PostUserRelationalModel
 import org.apache.spark.{SparkConf, SparkContext}
 
-
 object StackExchangeBatchJob extends PostUserRelationalModel {
 
   private val APP_NAME = getClass.getSimpleName
   private val INPUT_PATH = "input_path"
   private val OUTPUT_PATH = "output_path"
+  private val FUNCTIONAL_MODEL_NAME = "functional_model_name"
 
   case class Config(
-                     inputPath: String = "",
-                     outputPath: String = ""
-                   )
+      inputPath: String = "",
+      outputPath: String = "",
+      functionalModelname: String = ""
+  )
 
   def parseArgs(args: Array[String]): Config = {
 
@@ -51,6 +52,10 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
         .required()
         .text("Path for saving JSON and Parquet file")
 
+      opt[String](FUNCTIONAL_MODEL_NAME)
+        .action((x, c) => c.copy(outputPath = x))
+        .text("Name the model to run")
+
     }
 
     parser.parse(args, Config()) match {
@@ -66,12 +71,15 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
 
     val inputPath = config.inputPath
     val outputPath = config.outputPath
+    val functionalModelName = config.functionalModelname
 
-    batchjobRun(inputPath, outputPath)
+    batchJobRun(inputPath, outputPath, functionalModelName)
 
   }
 
-  def batchjobRun(inputPath: String, outputPath: String): Long = {
+  def batchJobRun(inputPath: String,
+                  outputPath: String,
+                  functionalModelName: String): Long = {
     userPostVotes(inputPath, outputPath)
   }
 
@@ -83,10 +91,7 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
     new SparkContext(sparkConf)
   }
 
-
-
-
-
-//    ./spark-submit --master local --class com.promptscalaspark.stackexchange.jobs.StackExchangeBatchJob  --packages com.databricks:spark-xml_2.11:0.4.1 /home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar  --input_path '/home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/'     --output_path /home/xargus/Desktop/writerTest
-
 }
+
+//./spark-submit  --master local   --class com.promptscalaspark.stackexchange.jobs.StackExchangeBatchJob  --packages  com.databricks:spark-xml_2.11:0.4.1   /home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/target/scala-2.11/stackexchange-spark-scala-analyser-assembly-0.1.jar --input_path '/home/xargus/Documents/MyGit/stackexchange-spark-scala-analyser/src/main/resources/StackExchangeTestData/*/' --output_path /home/xargus/Desktop/writerTest/ --functional_model_name userPostVotes
+

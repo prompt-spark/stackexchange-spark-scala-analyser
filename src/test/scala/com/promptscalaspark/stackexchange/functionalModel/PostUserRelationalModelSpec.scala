@@ -34,6 +34,6 @@ class PostUserRelationalModelSpec
     getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
   it("should check all the column numbers for userBadges dataset") {
-    userPostVotes(resourcePath + "/*/","")  shouldBe 5
+    userPostVotes(resourcePath + "/*/","/home/xargus/testResults")  shouldBe 5
   }
 }

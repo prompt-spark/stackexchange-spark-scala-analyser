@@ -33,11 +33,19 @@ class StackExchangeBatchJobSpec
   val inputResourcePath: String =
     getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
-  describe("count all the post modelles data") {
-    it("get count of all modells") {
-      StackExchangeBatchJob.batchjobRun(
+  describe("count all the post modeles data") {
+    it("get count of valid models") {
+      StackExchangeBatchJob.batchJobRun(
         inputResourcePath + "/*/",
-        "/home/xargus/testResults") shouldBe 5
+        "/home/xargus/testResults","userPostVotes") shouldBe 5
     }
+
+//    it("get count of no functional model") {
+//      StackExchangeBatchJob.batchJobRun(
+//        inputResourcePath + "/*/",
+//        "/home/xargus/testResults","") shouldBe 0
+//    }
   }
+
+
 }
