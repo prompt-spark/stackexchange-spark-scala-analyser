@@ -23,9 +23,7 @@ package com.promptscalaspark.stackexchange.io.ioSchema
 
 object StackExchangeInputSchema {
 
-  case class BadgeData(userId: Long,
-                       name: String,
-                       date: String)
+  case class BadgeData(userId: Long, name: String, date: String)
 
   case class CommentsData(userId: Long,
                           userDisplayName: String,
@@ -35,87 +33,87 @@ object StackExchangeInputSchema {
                           creationDate: String)
 
   case class PostHistoryData(
-                              postHistoryTypeId: Long,
-                              id: Long,
-                              revisionGUID: String,
-                              creationDate: String,
-                              userId: Long,
-                              userDisplayName: String,
-                              comment: Option[String],
-                              text: String,
-                              postId: Long,
-                              value: String,
-                              closeReasonId: Option[String]
-                            )
+      postHistoryTypeId: Long,
+      id: Long,
+      revisionGUID: String,
+      creationDate: String,
+      userId: Long,
+      userDisplayName: String,
+      comment: Option[String],
+      text: String,
+      postId: Long,
+      value: String,
+      closeReasonId: Option[String]
+  )
 
   case class PostLinksData(
-                            creationDate: String,
-                            id: Long,
-                            linkTypeId: Long,
-                            postId: Long,
-                            relatedPostId: Long,
-                            value: String
-                          )
+      creationDate: String,
+      id: Long,
+      linkTypeId: Long,
+      postId: Long,
+      relatedPostId: Long,
+      value: String
+  )
 
   case class VotesData(
-                        bountyAmount: Option[Long],
-                        creationDate: String,
-                        id: Long,
-                        postId: Long,
-                        userId: Option[Long],
-                        value: String,
-                        voteTypeId: Long
-                      )
+      bountyAmount: Option[Long],
+      creationDate: String,
+      id: Long,
+      postId: Long,
+      userId: Option[Long],
+      value: String,
+      voteTypeId: Long
+  )
 
   case class UsersData(
-                        aboutMe: String,
-                        accountId: Long,
-                        creationDate: String,
-                        displayName: String,
-                        downVotes: Long,
-                        id: Long,
-                        lastAccessDate: String,
-                        location: String,
-                        profileImageUrl: String,
-                        reputation: Long,
-                        upVotes: Long,
-                        value: String,
-                        views: Long,
-                        websiteUrl: String
-                      )
+      aboutMe: String,
+      accountId: Long,
+      creationDate: String,
+      displayName: String,
+      downVotes: Long,
+      id: Long,
+      lastAccessDate: String,
+      location: String,
+      profileImageUrl: String,
+      reputation: Long,
+      upVotes: Long,
+      value: String,
+      views: Long,
+      websiteUrl: String
+  )
 
   case class TagsData(
-                       count: Long,
-                       excerptPostId: Long,
-                       id: Long,
-                       tagName: String,
-                       value: String,
-                       wikiPostId: Long
-                     )
+      count: Long,
+      excerptPostId: Long,
+      id: Long,
+      tagName: String,
+      value: String,
+      wikiPostId: Long
+  )
 
   case class PostData(
-                       acceptedAnswerId: Long ,
-                       answerCount: Long ,
-                       body: String ,
-                       closedDate: String ,
-                       commentCount: Long ,
-                       communityOwnedDate: String ,
-                       creationDate: String ,
-                       favoriteCount: Long ,
-                       id: Long ,
-                       lastActivityDate: String ,
-                       lastEditDate: String ,
-                       lastEditorDisplayName: String ,
-                       lastEditorUserId: Long ,
-                       ownerDisplayName: String ,
-                       ownerUserId: Long ,
-                       parentId: Long ,
-                       postTypeId: Long ,
-                       score: Long ,
-                       tags: String ,
-                       title: String ,
-                       value: String ,
-                       viewCount: Long
-                     )
+      acceptedAnswerId: Long,
+      answerCount: Long,
+      body: String,
+      closedDate: String,
+      commentCount: Long,
+      communityOwnedDate: String,
+      creationDate: String,
+      favoriteCount: Long,
+      id: Long,
+      lastActivityDate: String,
+      lastEditDate: String,
+      lastEditorDisplayName: String,
+      lastEditorUserId: Long,
+      ownerDisplayName: String,
+      ownerUserId: Long,
+      parentId: Long,
+      postTypeId: Long,
+      score: Long,
+      tags: String,
+      title: String,
+      value: String,
+      viewCount: Long
+  )
 
 }

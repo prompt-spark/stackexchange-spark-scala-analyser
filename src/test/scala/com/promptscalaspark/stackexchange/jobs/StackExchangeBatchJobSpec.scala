@@ -44,7 +44,7 @@ class StackExchangeBatchJobSpec
 
       Option(new File(outPutPath + "/userPostVotes/").list)
         .map(_.count(_.endsWith(".json")))
-        .getOrElse(0) shouldBe 2
+        .getOrElse(0) shouldBe 1
     }
 
   }

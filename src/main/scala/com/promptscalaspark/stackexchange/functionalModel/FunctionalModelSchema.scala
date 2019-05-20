@@ -28,7 +28,8 @@ object FunctionalModelSchema {
                                    countPostId:Long,
                                    views:Long,
                                    reputation:Long,
-                                   maxCommentsScore:Long
+                                   maxCommentsScore:Long,
+                                   location:String
                                    )
 
 }

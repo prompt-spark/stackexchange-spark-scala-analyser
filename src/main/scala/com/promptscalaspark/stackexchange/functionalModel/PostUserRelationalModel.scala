@@ -21,8 +21,8 @@ trait PostUserRelationalModel {
 
     val userPostVotesCountDs = postComments
       .join(userVotes, postComments.col("userId") === userVotes.col("userId"))
-      .select("ownerUserId", "postId", "views", "reputation", "commentsScore")
-      .groupBy("views", "reputation")
+      .select("ownerUserId", "postId", "views", "reputation", "commentsScore","location")
+      .groupBy("views", "reputation","location")
       .agg(count("postId"), count("ownerUserId"), max(col("commentsScore")))
       .withColumnRenamed("count(postId)", "countPostId")
       .withColumnRenamed("count(ownerUserId)", "countUserId")

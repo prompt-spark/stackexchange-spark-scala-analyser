@@ -21,9 +21,7 @@
 
 package com.promptscalaspark.stackexchange.jobs
 
-import com.promptscalaspark.stackexchange.functionalModel.FunctionalModelSchema.userPostVotesCountData
 import com.promptscalaspark.stackexchange.functionalModel.PostUserRelationalModel
-import org.apache.spark.sql.Dataset
 import org.apache.spark.{SparkConf, SparkContext}
 
 import scala.collection.parallel.immutable.ParVector
@@ -92,7 +90,7 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
 
     parVector.foreach {
       case (data, out) =>
-        data.coalesce(2).write.mode("overwrite").option("header", "true").json(out)
+        data.coalesce(1).write.mode("overwrite").option("header", "true").json(out)
     }
 
   }
