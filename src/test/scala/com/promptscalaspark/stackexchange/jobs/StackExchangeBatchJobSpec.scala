@@ -21,6 +21,8 @@
 
 package com.promptscalaspark.stackexchange.jobs
 
+import java.io.File
+
 import com.promptscalaspark.stackexchange.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
@@ -32,20 +34,19 @@ class StackExchangeBatchJobSpec
 
   val inputResourcePath: String =
     getClass.getClassLoader.getResource("StackExchangeTestData").getPath
+  val outPutPath: String = "/home/abhishekv11/testResults/"
 
   describe("count all the post modeles data") {
     it("get count of valid models") {
-      StackExchangeBatchJob.batchJobRun(
-        inputResourcePath + "/*/",
-        "/home/xargus/testResults","userPostVotes") shouldBe 5
+      StackExchangeBatchJob.batchJobParallelWriter(inputResourcePath + "/*/",
+                                                   outPutPath,
+                                                   "userPostVotes")
+
+      Option(new File(outPutPath + "/userPostVotes/").list)
+        .map(_.count(_.endsWith(".json")))
+        .getOrElse(0) shouldBe 2
     }
 
-//    it("get count of no functional model") {
-//      StackExchangeBatchJob.batchJobRun(
-//        inputResourcePath + "/*/",
-//        "/home/xargus/testResults","") shouldBe 0
-//    }
   }
-
 
 }

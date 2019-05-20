@@ -20,6 +20,15 @@ package com.promptscalaspark.stackexchange.functionalModel
  * share and change all versions of a program--to make sure it remains free
  * software for all its users.
  */
+
 object FunctionalModelSchema {
+
+  case class userPostVotesCountData(
+                                   countUserId:Long,
+                                   countPostId:Long,
+                                   views:Long,
+                                   reputation:Long,
+                                   maxCommentsScore:Long
+                                   )
 
 }

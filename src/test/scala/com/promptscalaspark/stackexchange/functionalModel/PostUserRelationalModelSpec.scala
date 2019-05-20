@@ -25,7 +25,8 @@ import com.promptscalaspark.stackexchange.SparkSpec
 import org.scalatest.{FunSpec, GivenWhenThen, Matchers}
 
 class PostUserRelationalModelSpec
-  extends FunSpec with PostUserRelationalModel
+    extends FunSpec
+    with PostUserRelationalModel
     with SparkSpec
     with GivenWhenThen
     with Matchers {
@@ -34,6 +35,6 @@ class PostUserRelationalModelSpec
     getClass.getClassLoader.getResource("StackExchangeTestData").getPath
 
   it("should check all the column numbers for userBadges dataset") {
-    userPostVotes(resourcePath + "/*/","/home/xargus/testResults")  shouldBe 5
+    userPostVotesCount(resourcePath + "/*/").columns.length shouldBe 5
   }
 }

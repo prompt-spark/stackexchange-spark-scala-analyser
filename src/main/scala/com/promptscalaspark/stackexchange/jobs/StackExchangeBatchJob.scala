@@ -21,8 +21,12 @@
 
 package com.promptscalaspark.stackexchange.jobs
 
+import com.promptscalaspark.stackexchange.functionalModel.FunctionalModelSchema.userPostVotesCountData
 import com.promptscalaspark.stackexchange.functionalModel.PostUserRelationalModel
+import org.apache.spark.sql.Dataset
 import org.apache.spark.{SparkConf, SparkContext}
+
+import scala.collection.parallel.immutable.ParVector
 
 object StackExchangeBatchJob extends PostUserRelationalModel {
 
@@ -73,14 +77,24 @@ object StackExchangeBatchJob extends PostUserRelationalModel {
     val outputPath = config.outputPath
     val functionalModelName = config.functionalModelname
 
-    batchJobRun(inputPath, outputPath, functionalModelName)
+    batchJobParallelWriter(inputPath, outputPath, functionalModelName)
 
   }
 
-  def batchJobRun(inputPath: String,
+  def batchJobParallelWriter(inputPath: String,
                   outputPath: String,
-                  functionalModelName: String): Long = {
-    userPostVotes(inputPath, outputPath)
+                  functionalModelName: String): Unit = {
+
+
+    val parVector = ParVector(
+      (userPostVotesCount(inputPath), outputPath + "/userPostVotes"))
+
+
+    parVector.foreach {
+      case (data, out) =>
+        data.coalesce(2).write.mode("overwrite").option("header", "true").json(out)
+    }
+
   }
 
   private def sparkContext(appName: String, isLocal: Boolean): SparkContext = {
