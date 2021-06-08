@@ -6,7 +6,9 @@ This project handles stackexchange archives data in Apache Spark with proper fra
 concepts. By an example of implementation any project in Spark-Scala can be in production pipeline.
 
 
-# Modules
+
+# Modules <img align="right" width="290" height="160" src="https://github.com/prompt-spark/stackexchange-spark-scala-analyser/blob/master/PROMPT_logo_1.png?raw=true">
+
 
 	└── src
 	    ├── main
